@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+
+:root {
+  font-family: sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Testimonial_section */
+.ani-marquee{
+  animation: marquee 30s linear infinite;
+}
+@keyframes marquee {
+  0%{
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
