@@ -1,81 +1,100 @@
-import React from 'react'
-import {
-    LockClosedIcon,
-    AcademicCapIcon,
-    CodeIcon,
-    ShieldCheckIcon,
-    DeviceMobileIcon,
-    DatabaseIcon,
-    CloudIcon,
-} from "@heroicons/react/solid";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import Ethical_hacking_img from '../assets/Ethical_hacking.jpeg';
+import Penetration_testing_img from '../assets/penetration_testing.png';
+import Web_application_security_img from '../assets/web_application_security.jpg';
 
 const courses = [
     {
-        icon: <LockClosedIcon className="w-10 h-10 text-cyan-400 mx-auto" />,
         title: "Ethical Hacking Fundamentals",
-        description: "Start from zero and learn the basics of ethical hacking, reconnaissance, and vulnerability analysis.",
+        description:
+            "Start from zero and learn the basics of ethical hacking, reconnaissance, and vulnerability analysis.",
         duration: "8 weeks",
-        level: "Beginner"
+        level: "Beginner",
+        image: Ethical_hacking_img,
     },
     {
-        icon: <AcademicCapIcon className="w-10 h-10 text-cyan-400 mx-auto" />,
         title: "Advanced Penetration Testing",
-        description: "Master exploitation techniques, post-exploitation, and advanced network attacks in modern environments.",
+        description:
+            "Master exploitation techniques, post-exploitation, and advanced network attacks in modern environments.",
         duration: "12 weeks",
-        level: "Advanced"
+        level: "Advanced",
+        image: Penetration_testing_img,
     },
     {
-        icon: <CodeIcon className="w-10 h-10 text-cyan-400 mx-auto" />,
         title: "Web Application Security",
-        description: "In-depth guide to web security, OWASP Top 10, and secure coding practices with hands-on labs.",
+        description:
+            "In-depth guide to web security, OWASP Top 10, and secure coding practices with hands-on labs.",
         duration: "10 weeks",
-        level: "Intermediate"
-    }
+        level: "Intermediate",
+        image: Web_application_security_img,
+    },
 ];
 
-
 const Courses_section = () => {
-    return (
-        <>
-            <section id="courses" className="py-24 bg-gray-900">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                            Our Course Catalog
-                        </h2>
-                        <p className="text-xl text-gray-300">
-                            Comprehensive cybersecurity education from beginner to advanced levels
-                        </p>
-                    </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {courses.map((course, index) => (
-                            <div key={index} className="bg-gray-800 rounded-lg p-6 hover:transition duration-200 transform hover:-translate-y-2">
-                                <div className="text-3xl mb-4 flex justify-center">{course.icon}</div>
-                                <h3 className="text-xl font-bold text-white mb-2">{course.title}</h3>
+    const navigate = useNavigate();
+
+    return (
+        <section id="courses" className="py-24 bg-black">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Section header */}
+                <div className="text-center mb-16">
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                        Our Course Catalog
+                    </h2>
+                    <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                        Comprehensive cybersecurity education from beginner to advanced levels
+                    </p>
+                </div>
+
+                {/* Courses grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {courses.map((course, index) => (
+                        <div
+                            key={index}
+                            className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover: transition-shadow duration-300 transform hover:-translate-y-2"
+                        >
+                            {/* Course Image */}
+                            <img
+                                src={course.image}
+                                alt={course.title}
+                                className="w-full h-48 object-cover"
+                            />
+
+                            {/* Course Content */}
+                            <div className="p-6">
+                                <h3 className="text-xl font-bold text-red-600 mb-2">{course.title}</h3>
                                 <p className="text-gray-300 mb-4">{course.description}</p>
-                                <div className="flex justify-between items-center mb-4">
-                                    <span className="text-sm text-cyan-400">Duration: {course.duration}</span>
-                                    <span className="text-sm bg-gray-700 px-2 py-1 rounded">{course.level}</span>
+
+                                <div className="flex justify-between items-center mb-4 text-sm">
+                                    <span className="text-red-500 font-semibold">Duration: {course.duration}</span>
+                                    <span className="bg-gray-700 px-3 py-1 rounded-full text-white">
+                                        {course.level}
+                                    </span>
                                 </div>
-                                <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 rounded-lg transition-colors">
+
+                                <button className="w-full bg-red-700 hover:bg-red-800 text-white py-3 rounded-lg font-semibold transition-colors">
                                     Learn More
                                 </button>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}
                 </div>
+
+                {/* Explore More button */}
                 <div className="flex justify-center mt-12">
                     <button
-                        className="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
-                    // onClick={() => ...} // Add your navigation, modal, or load-more logic here
+                        className="bg-red-700 hover:bg-red-800 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors"
+                        onClick={() => navigate('/courses')}
                     >
                         Explore More Courses
                     </button>
                 </div>
-            </section>
-        </>
-    )
-}
+            </div>
+        </section>
+    );
+};
 
-export default Courses_section
+export default Courses_section;
