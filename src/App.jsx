@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
+import Course_desc from "./components/Course_desc";
 
 function App() {
 
@@ -12,7 +12,7 @@ function App() {
       <main className="min-h-screen bg-gray-900 text-white">
         <Outlet />
       </main>
-      <Footer />
+      <Footer /> 
     </>
   )
 }

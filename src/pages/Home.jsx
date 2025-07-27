@@ -10,13 +10,12 @@ import Blogs from './Blogs'
 const Home = () => {
   return (
     <>
-    {/* <Hero_section /> */}
+    <Hero_section />
     {/* <Stats_section /> */}
-    {/* <Courses_section />
+    <Courses_section />
     <Features_section />
     <Testimonial_section />
-    <CTA_section /> */}
-    <Blogs />
+    <CTA_section />
     </>
   )
 }

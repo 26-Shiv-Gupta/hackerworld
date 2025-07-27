@@ -7,7 +7,7 @@ const CTA_section = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
           Ready to Start Your Cybersecurity Journey?
         </h2>
-        <p className="text-xl text-red-200 mb-8">
+        <p className="text-xl text-white mb-8">
           Join thousands of professionals who have advanced their careers with our courses
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

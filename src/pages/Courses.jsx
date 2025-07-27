@@ -8,6 +8,7 @@ import {
     DatabaseIcon,
     CloudIcon,
 } from "@heroicons/react/solid";
+import Course_card from '../components/Course_card';
 
 const courses = [
     {
@@ -77,7 +78,7 @@ const Courses = () => {
                     <h1 className="text-4xl font-bold text-white mb-4">
                         Explore Our Cybersecurity Courses
                     </h1>
-                    <p className="text-lg text-red-300">
+                    <p className="text-lg text-white">
                         Practical, hands-on cyber education—beginner to advanced, taught by industry leaders.
                     </p>
                 </section>
@@ -103,22 +104,15 @@ const Courses = () => {
                 {/* Course Grid */}
                 <section className="max-w-7xl mx-auto">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {courses.map((course, idx) => (
-                            <div
-                                key={idx}
-                                className="bg-gray-900 rounded-lg p-6 hover:bg-gray-800 transition duration-200 transform hover:-translate-y-2 shadow-lg"
-                            >
-                                <div className="mb-4 flex justify-center">{course.icon}</div>
-                                <h3 className="text-xl font-bold text-red-600 mb-2">{course.title}</h3>
-                                <p className="text-red-300 mb-4">{course.description}</p>
-                                <div className="flex justify-between items-center mb-4">
-                                    <span className="text-sm text-red-500">Duration: {course.duration}</span>
-                                    <span className="text-sm bg-gray-800 px-2 py-1 rounded text-white">{course.level}</span>
-                                </div>
-                                <button className="w-full bg-red-700 hover:bg-red-700 text-white py-2 rounded-lg transition-colors">
-                                    Learn More
-                                </button>
-                            </div>
+                        {courses.map((course, index) => (
+                            <Course_card 
+                            key={index}
+                            image={course.image}
+                            title={course.title}
+                            description={course.description}
+                            duration={course.duration}
+                            level={course.level}
+                            />
                         ))}
                     </div>
                 </section>

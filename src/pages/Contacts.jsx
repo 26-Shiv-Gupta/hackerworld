@@ -20,7 +20,7 @@ const Contacts = () => {
       <main className="bg-black min-h-screen py-16 px-4">
         <section className="max-w-4xl mx-auto text-center mb-12">
           <h1 className="text-4xl font-bold text-white mb-4">Contact CyberSec Academy</h1>
-          <p className="text-lg text-red-300 mb-6">
+          <p className="text-lg text-white mb-6">
             We'd love to hear from you! Fill out the form, or use the information below to reach us directly.
           </p>
         </section>

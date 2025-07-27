@@ -1,5 +1,6 @@
 import React from 'react'
 import { ShieldCheckIcon } from "@heroicons/react/solid";
+import { NavLink } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -39,10 +40,10 @@ const Footer = () => {
           <div>
             <h3 className="text-red-600 font-semibold mb-4">Company</h3>
             <ul className="space-y-2 text-gray-300">
-              <li><a href="#" className="hover:text-red-500 transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-red-500 transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-red-500 transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-red-500 transition-colors">Terms of Service</a></li>
+              <li><NavLink to="/about" className="hover:text-red-500 transition-colors">About Us</NavLink></li>
+              <li><NavLink to="careers" className="hover:text-red-500 transition-colors">Careers</NavLink></li>
+              <li><NavLink to="/#privacy_policy" className="hover:text-red-500 transition-colors">Privacy Policy</NavLink></li>
+              <li><NavLink to="/#term_of_service" className="hover:text-red-500 transition-colors">Terms of Service</NavLink></li>
             </ul>
           </div>
         </div>

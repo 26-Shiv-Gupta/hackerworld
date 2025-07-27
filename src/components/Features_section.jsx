@@ -37,7 +37,7 @@ const Features_section = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Why Choose CyberSec Academy?
           </h2>
-          <p className="text-xl text-red-200">
+          <p className="text-xl text-white">
             We provide the most comprehensive and practical cybersecurity education
           </p>
         </div>
@@ -49,7 +49,7 @@ const Features_section = () => {
             >
               <div className="text-4xl mb-4 flex justify-center">{feature.icon}</div>
               <h3 className="text-xl font-bold text-red-600 mb-2">{feature.title}</h3>
-              <p className="text-red-100">{feature.description}</p>
+              <p className="text-white">{feature.description}</p>
             </div>
           ))}
         </div>

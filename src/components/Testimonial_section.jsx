@@ -70,7 +70,7 @@ const Testimonial_section = () => {
                     <StarIcon key={i} className="h-5 w-5 text-red-500" />
                   ))}
                 </div>
-                <p className="text-red-200 mb-4 italic">
+                <p className="text-white mb-4 italic">
                   "{testimonial.content}"
                 </p>
                 <div>

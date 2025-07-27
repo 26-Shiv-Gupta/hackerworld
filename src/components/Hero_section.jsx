@@ -1,8 +1,10 @@
 import React from "react";
 import { PlayIcon } from "@heroicons/react/solid";
+import { useNavigate } from 'react-router-dom';
 // import homepageBackground from "../assets/hero_section_background.webp";
 
 const Hero_section = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative bg-gradient-to-r from-black via-gray-900 to-black py-30 min-h-[600px]">
       {/* Blurred Background Image */}
@@ -35,7 +37,8 @@ const Hero_section = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <button className="bg-red-700 hover:bg-red-800 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg shadow-red-500/30 cursor-pointer">
+            <button className="bg-red-700 hover:bg-red-800 text-white px-10 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg shadow-red-500/30 cursor-pointer" 
+            onClick={() => navigate('/courses')}>
               Start Learning Today
             </button>
             <button className="border border-red-50 hover:border hover:border-red-600 text-red-500 hover:text-red-600 px-10 py-4 rounded-lg text-lg font-semibold transition-colors flex items-center bg-white bg-opacity-10 cursor-pointer">
