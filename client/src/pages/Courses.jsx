@@ -9,6 +9,7 @@ import {
     CloudIcon,
 } from "@heroicons/react/solid";
 import Course_card from '../components/Course_card';
+import { useNavigate } from 'react-router-dom';
 
 const courses = [
     {
@@ -70,6 +71,9 @@ const courses = [
 ];
 
 const Courses = () => {
+
+    const navigate = useNavigate();
+    
     return (
         <>
             <main className="bg-black min-h-screen py-16 px-4">
@@ -112,6 +116,7 @@ const Courses = () => {
                             description={course.description}
                             duration={course.duration}
                             level={course.level}
+                            onLearnMore={() => navigate('/course_desc', { state: course })}
                             />
                         ))}
                     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     AcademicCapIcon,
     CheckCircleIcon,
@@ -6,16 +6,10 @@ import {
     ChevronDownIcon,
     StarIcon,
 } from "@heroicons/react/solid";
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // --- Static Data (replace as needed)
-const course = {
-    title: "Ethical Hacking Fundamentals",
-    duration: "8 weeks",
-    level: "Beginner",
-    price: 149,
-    enrollmentLink: "/enroll/ethical-hacking-fundamentals",
-    description:
-        "Dive into ethical hacking from scratch! This course covers essential concepts, tools, and real-world techniques needed by aspiring cybersecurity professionals.",
+const modules = {
     modules: [
         {
             name: "Module 1: Introduction & Cybersecurity Mindset",
@@ -137,8 +131,15 @@ const faqs = [
     },
 ];
 
-const CourseDetailPage = () => {
+
+const Course_desc = () => {
     const [openIdx, setOpenIdx] = useState(null);
+    const location = useLocation();
+    const course = location.state;
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <>
@@ -168,7 +169,7 @@ const CourseDetailPage = () => {
                         <section className="bg-gray-900 rounded-lg shadow-lg p-8 mb-10">
                             <h2 className="text-2xl font-bold text-red-600 mb-6">Course Syllabus</h2>
                             <div className="space-y-6">
-                                {course.modules.map((mod, idx) => (
+                                {modules.modules.map((mod, idx) => (
                                     <div key={idx} className="">
                                         <h3 className="text-xl font-semibold text-white mb-2">{mod.name}</h3>
                                         <ul className="list-disc list-inside text-gray-200 space-y-1 pl-4">
@@ -227,7 +228,7 @@ const CourseDetailPage = () => {
                     <aside className="w-full lg:w-[350px] flex-shrink-0 lg:sticky top-16 self-start rounded-lg">
                         <div className="bg-gray-900 rounded-2xl shadow-2xl border-t-4 border-red-700 p-8 mb-8 flex flex-col">
                             <img
-                                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80"
+                                src={course.image}
                                 alt="Course Highlight"
                                 className="w-full h-48 object-cover rounded-lg mb-6"
                             />
@@ -294,4 +295,4 @@ const CourseDetailPage = () => {
     );
 };
 
-export default CourseDetailPage;
+export default Course_desc;

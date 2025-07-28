@@ -1,13 +1,14 @@
 import React from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 
-const Course_card = ({index, image, title, description, duration, level}) => {
+const Course_card = ({index, image, title, description, duration, level, onLearnMore}) => {
     return (
         <>
             <div
                 key={index}
                 className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover: transition-shadow duration-300 transform hover:-translate-y-2"
             >
-                {/* Course Image */}
+                {/* Course Image */}    
                 <img
                     src={image}
                     alt={title}
@@ -26,7 +27,7 @@ const Course_card = ({index, image, title, description, duration, level}) => {
                         </span>
                     </div>
 
-                    <button className="w-full bg-red-700 hover:bg-red-800 text-white py-3 rounded-lg font-semibold transition-colors">
+                    <button className="w-full bg-red-700 hover:bg-red-800 text-white py-3 rounded-lg font-semibold transition-colors" onClick={onLearnMore}>
                         Learn More
                     </button>
                 </div>

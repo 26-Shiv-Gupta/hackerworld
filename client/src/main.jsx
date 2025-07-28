@@ -8,6 +8,7 @@ import Careers from './pages/Careers.jsx';
 import Contacts from './pages/Contacts.jsx';
 import Courses from './pages/Courses';
 import Home from './pages/Home'
+import Course_desc from './components/Course_desc.jsx';
 
 import { createBrowserRouter, Router, RouterProvider } from 'react-router-dom';
 
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { path: "/courses", element: <Courses /> }, // "/courses"
       { path: "/careers", element: <Careers /> },  // "/careers"
       { path: "/contacts", element: <Contacts /> }, // "/contacts"
+      { path: "/course_desc", element: <Course_desc />}
       // add more routes here if needed
     ],
   },

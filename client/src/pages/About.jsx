@@ -9,7 +9,7 @@ const About = () => {
   return (
     <main className="bg-black min-h-screen py-16 px-6 text-white">
       {/* Header */}
-      <section className="max-w-5xl mx-auto mb-20">
+      <section className="max-w-5xl mx-auto mb-15 p-8 border rounded-lg">
         <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Image Left */}
           <div className="md:w-1/2">
@@ -19,11 +19,12 @@ const About = () => {
               className="rounded-lg shadow-lg object-cover w-full h-72"
             />
           </div>
-          <div className="md:w-1/2 text-center md:text-left">
-            <h1 className="text-3xl font-extrabold text-red-600 mb-6 flex justify-center md:justify-start items-center gap-3">
+          {/*text right*/}
+          <div className="md:w-1/2">
+            <h2 className="text-3xl font-bold text-red-600 mb-6 text-center md:text-left">
               About CyberSec Academy
-            </h1>
-            <p className="text-lg text-gray-300 max-w-xl leading-relaxed">
+            </h2>
+            <p className="text-gray-300 leading-relaxed ">
               CyberSec Academy is dedicated to empowering the next generation of cybersecurity
               professionals through hands-on, ethical, and industry-aligned education. With courses
               designed for all skill levels, we prepare learners to overcome real-world cyber threats
@@ -34,7 +35,7 @@ const About = () => {
       </section>
 
       {/* Mission */}
-      <section className="max-w-5xl mx-auto mb-20  bg-gray-900 rounded-lg p-8 shadow-lg">
+      <section className="max-w-5xl mx-auto mb-15  bg-gray-900 rounded-lg p-8 shadow-lg">
         <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Text Left */}
           <div className="md:w-1/2">
@@ -61,7 +62,7 @@ const About = () => {
       </section>
 
       {/* Core Values */}
-      <section className="max-w-5xl mx-auto mb-20">
+      <section className="max-w-5xl mx-auto mb-15 p-8 border rounded-lg">
         <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Image Left */}
           <div className="md:w-1/2">
@@ -98,7 +99,7 @@ const About = () => {
       </section>
 
       {/* Meet Our Team */}
-      <section className="max-w-5xl mx-auto mb-20 bg-gray-900 rounded-lg p-8 shadow-lg">
+      <section className="max-w-5xl mx-auto mb-15 bg-gray-900 rounded-lg p-8 shadow-lg">
         <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Text Left */}
           <div className="md:w-1/2">
@@ -124,7 +125,7 @@ const About = () => {
       </section>
 
       {/* Vision */}
-      <section className="max-w-5xl mx-auto mb-20">
+      <section className="max-w-5xl mx-auto mb-15 p-8 border rounded-lg">
         <div className="flex flex-col md:flex-row items-center gap-12">
           {/* Image Left */}
           <div className="md:w-1/2">

@@ -33,3 +33,8 @@
     transform: translateX(-50%);
   }
 }
+
+
+.bg-black-2{
+  background-color: rgb(16, 16, 16);
+}

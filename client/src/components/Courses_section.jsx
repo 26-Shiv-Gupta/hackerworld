@@ -59,7 +59,8 @@ const Courses_section = () => {
                             title={course.title}
                             description={course.description}
                             duration={course.duration}
-                            level={course.level} />
+                            level={course.level} 
+                            onLearnMore={() => navigate('/course_desc', { state: course })}/>
                         ))}
                     </div>
 
