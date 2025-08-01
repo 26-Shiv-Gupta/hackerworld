@@ -8,130 +8,6 @@ import {
 } from "@heroicons/react/solid";
 import { useLocation, useNavigate } from 'react-router-dom';
 
-// --- Static Data (replace as needed)
-const modules = {
-    modules: [
-        {
-            name: "Module 1: Introduction & Cybersecurity Mindset",
-            topics: [
-                "Cybersecurity landscape and roles",
-                "Understanding the hacker mindset",
-                "Types of threats and attacks",
-            ],
-        },
-        {
-            name: "Module 2: Reconnaissance & Footprinting",
-            topics: [
-                "Passive & active information gathering",
-                "Social engineering basics",
-                "OSINT techniques",
-            ],
-        },
-        {
-            name: "Module 3: Scanning & Enumeration",
-            topics: [
-                "Network mapping and port scanning",
-                "Service enumeration",
-                "Vulnerability scanning tools",
-            ],
-        },
-        {
-            name: "Module 4: Exploitation Basics",
-            topics: [
-                "System hacking fundamentals",
-                "Common exploitation methods",
-                "Privilege escalation concepts",
-            ],
-        },
-        {
-            name: "Module 5: Web & Wireless Attacks",
-            topics: [
-                "OWASP Top 10 intro",
-                "Practical web attack scenarios",
-                "Intro to wireless network hacking",
-            ],
-        },
-        {
-            name: "Module 6: Defense & Reporting",
-            topics: [
-                "Basic defense and mitigation strategies",
-                "Ethical/legal guidelines",
-                "Reporting and communication skills",
-            ],
-        },
-    ],
-};
-
-const features = [
-    "No Pre-requisite Required",
-    "170+ hours Video Content",
-    "450+ Curated Coding Questions (asked by Top Companies)",
-    "MEGA Problem-Solving Classes [First in Industry]",
-    "Live Resume & Interview Preparation",
-];
-
-// Mentor data
-const mentor = {
-    name: "John Doe",
-    title: "Senior Ethical Hacker & Instructor",
-    bio: `John has over 15 years of experience in cybersecurity, 
-        specializing in ethical hacking, penetration testing, and threat analysis. 
-        He has worked with Fortune 500 companies and government agencies to improve security.`,
-    image:
-        "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=400&q=80",
-};
-
-// Example student reviews data
-const reviews = [
-    {
-        name: "Alex Johnson",
-        rating: 5,
-        comment:
-            "This course was a game changer! The hands-on labs and practical approach boosted my confidence tremendously.",
-    },
-    {
-        name: "Maria Patel",
-        rating: 4,
-        comment:
-            "The instructors are knowledgeable and supportive. I particularly loved the live sessions for Q&A.",
-    },
-    {
-        name: "David Kim",
-        rating: 5,
-        comment:
-            "A comprehensive course that prepared me well for my cybersecurity job. Highly recommend to beginners!",
-    },
-];
-
-const faqs = [
-    {
-        question: "Do I need any prior experience to enroll in this course?",
-        answer:
-            "No prior experience is needed! This course is designed for complete beginners as well as those wanting to refresh their cybersecurity knowledge.",
-    },
-    {
-        question: "Are classes live or pre-recorded?",
-        answer:
-            "The course includes both: high-quality pre-recorded lectures for flexible learning, along with live sessions for Q&A and problem-solving.",
-    },
-    {
-        question: "Is there a certificate upon completion?",
-        answer:
-            "Yes, you will receive a verifiable certificate of completion after successfully finishing the course and assessments.",
-    },
-    {
-        question: "Will I have lifetime access to the course materials?",
-        answer:
-            "Absolutely! Once enrolled, all modules and resources are available to you for life.",
-    },
-    {
-        question: "Who can I reach out to if I need help during the course?",
-        answer:
-            "You can contact our support team or connect with instructors through the course discussion forums and dedicated channels.",
-    },
-];
-
-
 const Course_desc = () => {
     const [openIdx, setOpenIdx] = useState(null);
     const location = useLocation();
@@ -169,7 +45,7 @@ const Course_desc = () => {
                         <section className="bg-gray-900 rounded-lg shadow-lg p-8 mb-10">
                             <h2 className="text-2xl font-bold text-red-600 mb-6">Course Syllabus</h2>
                             <div className="space-y-6">
-                                {modules.modules.map((mod, idx) => (
+                                {course.modules.map((mod, idx) => (
                                     <div key={idx} className="">
                                         <h3 className="text-xl font-semibold text-white mb-2">{mod.name}</h3>
                                         <ul className="list-disc list-inside text-gray-200 space-y-1 pl-4">
@@ -182,18 +58,18 @@ const Course_desc = () => {
                             </div>
                         </section>
 
-                        {/* Our Mentor Section */}
+                        {/* Our course.Mentor Section */}
                         <section className="bg-gray-900 rounded-lg shadow-lg p-8 mb-10 flex flex-col md:flex-row items-center gap-6">
                             <img
-                                src={mentor.image}
-                                alt={mentor.name}
+                                src={course.mentor.image}
+                                alt={course.mentor.name}
                                 className="w-32 h-32 rounded-full object-cover flex-shrink-0"
                             />
                             <div>
-                                <h2 className="text-2xl font-bold text-red-600 mb-2">Our Mentor</h2>
-                                <h3 className="text-xl font-semibold text-white">{mentor.name}</h3>
-                                <p className="text-gray-400 italic mb-4">{mentor.title}</p>
-                                <p className="text-gray-300">{mentor.bio}</p>
+                                <h2 className="text-2xl font-bold text-red-600 mb-2">Our course.Mentor</h2>
+                                <h3 className="text-xl font-semibold text-white">{course.mentor.name}</h3>
+                                <p className="text-gray-400 italic mb-4">{course.mentor.title}</p>
+                                <p className="text-gray-300">{course.mentor.bio}</p>
                             </div>
                         </section>
 
@@ -203,7 +79,7 @@ const Course_desc = () => {
                                 Student Reviews
                             </h2>
                             <div className="space-y-5">
-                                {reviews.map((review, idx) => (
+                                {course.reviews.map((review, idx) => (
                                     <div
                                         key={idx}
                                         className="bg-black/60 rounded-lg p-5 shadow-inner"
@@ -237,7 +113,7 @@ const Course_desc = () => {
                                 <span className="text-gray-400 line-through text-xl font-semibold">₹7000</span>
                             </div>
                             <ul className="space-y-3 mb-6 flex-1">
-                                {features.map((feature, i) => (
+                                {course.features.map((feature, i) => (
                                     <li key={i} className="flex items-center text-gray-100 text-base">
                                         <CheckCircleIcon className="w-5 h-5 text-red-500 mr-2" />
                                         {feature}
@@ -261,7 +137,7 @@ const Course_desc = () => {
                         Frequently Asked Questions
                     </h2>
                     <ul className="space-y-4">
-                        {faqs.map((faq, idx) => (
+                        {course.faqs.map((faq, idx) => (
                             <li key={idx} className="border-b border-gray-800">
                                 <button
                                     className="w-full flex items-center justify-between text-left py-4 focus:outline-none"

@@ -36,17 +36,17 @@ const Contacts = () => {
               </li>
               <li className="flex items-center">
                 <PhoneIcon className="h-6 w-6 text-red-600 mr-3" />
-                <span>+1 (555) 123-4567</span>
+                <span>+91 9717760561</span>
               </li>
               <li className="flex items-center">
                 <LocationMarkerIcon className="h-6 w-6 text-red-600 mr-3" />
-                <span>1234 Cyber Lane, Innovation City, USA</span>
+                <span>Sector 62, Noida City, India</span>
               </li>
             </ul>
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-red-600 mb-2">Support Hours</h3>
               <p className="text-gray-400">
-                Monday–Friday: 9am–6pm (US Eastern Time)
+                Monday–Friday: 9am–6pm (Indian Time)
               </p>
               <p className="text-gray-400">Weekend & holidays: Email only</p>
             </div>

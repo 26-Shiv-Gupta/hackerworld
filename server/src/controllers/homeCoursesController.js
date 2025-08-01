@@ -1,7 +1,7 @@
-const Course = require('../models/course');
+const Course = require('../models/homeCourses');
 
 // GET all courses
-const getCourses = async (req, res) => {
+const gethomeCourses = async (req, res) => {
   try {
     const courses = await Course.find();
     res.status(200).json(courses);
@@ -11,7 +11,7 @@ const getCourses = async (req, res) => {
 };
 
 // POST create a new course
-const setCourse = async (req, res) => {
+const sethomeCourse = async (req, res) => {
   try {
     // You could validate here, for now we directly use req.body
     const newCourse = await Course.create({
@@ -20,14 +20,7 @@ const setCourse = async (req, res) => {
       level: req.body.level,
       duration: req.body.duration,
       image: req.body.image,
-      price: req.body.price,
-      originalPrice: req.body.originalPrice,
       enrollmentLink: req.body.enrollmentLink,
-      features: req.body.features,       // should be array of strings
-      mentor: req.body.mentor,           // should be object: { name, title, bio, image }
-      modules: req.body.modules,         // array of modules [{name, topics: []}]
-      reviews: req.body.reviews,         // array of {name, rating, comment}
-      faqs: req.body.faqs                // array of {question, answer}
     });
     res.status(201).json(newCourse);
   } catch (error) {
@@ -36,7 +29,7 @@ const setCourse = async (req, res) => {
 };
 
 // PUT update course by ID
-const updateCourse = async (req, res) => {
+const updatehomeCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
     if (!course) {
@@ -54,7 +47,7 @@ const updateCourse = async (req, res) => {
 };
 
 // DELETE course by ID
-const deleteCourse = async (req, res) => {
+const deletehomeCourse = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
     if (!course) {
@@ -68,8 +61,8 @@ const deleteCourse = async (req, res) => {
 };
 
 module.exports = {
-  getCourses,
-  setCourse,
-  updateCourse,
-  deleteCourse,
+  gethomeCourses,
+  sethomeCourse,
+  updatehomeCourse,
+  deletehomeCourse,
 };

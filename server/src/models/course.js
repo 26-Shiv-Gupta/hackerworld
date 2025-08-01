@@ -46,6 +46,6 @@ const CourseSchema = new mongoose.Schema({
   reviews: [ReviewSchema],
 
   faqs: [FAQSchema]
-}, { timestamps: true });
+});
 
 module.exports = mongoose.model('Course', CourseSchema);
