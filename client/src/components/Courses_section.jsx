@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Ethical_hacking_img from '../assets/Ethical_hacking.jpeg';
@@ -6,34 +6,20 @@ import Penetration_testing_img from '../assets/penetration_testing.png';
 import Web_application_security_img from '../assets/web_application_security.jpg';
 import Course_card from './Course_card';
 
-const courses = [
-    {
-        title: "Ethical Hacking Fundamentals",
-        description:
-            "Start from zero and learn the basics of ethical hacking, reconnaissance, and vulnerability analysis.",
-        duration: "8 weeks",
-        level: "Beginner",
-        image: Ethical_hacking_img,
-    },
-    {
-        title: "Advanced Penetration Testing",
-        description:
-            "Master exploitation techniques, post-exploitation, and advanced network attacks in modern environments.",
-        duration: "12 weeks",
-        level: "Advanced",
-        image: Penetration_testing_img,
-    },
-    {
-        title: "Web Application Security",
-        description:
-            "In-depth guide to web security, OWASP Top 10, and secure coding practices with hands-on labs.",
-        duration: "10 weeks",
-        level: "Intermediate",
-        image: Web_application_security_img,
-    },
-];
+
 
 const Courses_section = () => {
+    const [courses, setCourses] = useState([]);
+
+    const getCourses = () => {
+        fetch("http://localhost:5000/api/homeCourses")      // Backend API URL; adjust as needed
+            .then(res => res.json())
+            .then(json => setCourses(json))
+    }
+
+    useEffect(() => {
+        getCourses();
+    }, []);
 
     const navigate = useNavigate();
 
@@ -53,14 +39,14 @@ const Courses_section = () => {
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                         {courses.map((course, index) => (
-                            <Course_card 
-                            key={index}
-                            image={course.image}
-                            title={course.title}
-                            description={course.description}
-                            duration={course.duration}
-                            level={course.level} 
-                            onLearnMore={() => navigate('/course_desc', { state: course })}/>
+                            <Course_card
+                                key={index}
+                                image={course.image}
+                                title={course.title}
+                                description={course.description}
+                                duration={course.duration}
+                                level={course.level}
+                                onLearnMore={() => navigate('/course_desc', { state: course })} />
                         ))}
                     </div>
 
