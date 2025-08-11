@@ -12,7 +12,7 @@ const Courses_section = () => {
     const [courses, setCourses] = useState([]);
 
     const getCourses = () => {
-        fetch("http://localhost:5000/api/homeCourses")      // Backend API URL; adjust as needed
+        fetch("https://hackerworld.onrender.com/api/homeCourses")      // Backend API URL; adjust as needed
             .then(res => res.json())
             .then(json => setCourses(json))
     }

@@ -7,7 +7,7 @@ const Testimonial_section = () => {
   const [testimonials, setTestimonials] = useState([])
 
   const getTestimonials = () => {
-    fetch("http://localhost:5000/api/homeReviews")
+    fetch("https://hackerworld.onrender.com/api/homeReviews")
       .then(res => res.json())
       .then(json => setTestimonials(json))
   }

@@ -18,7 +18,7 @@ const Courses = () => {
     // const [error, setError] = useState(null);
 
     const getCourses = () => {
-        fetch("http://localhost:5000/api/courses")      // Backend API URL; adjust as needed
+        fetch("https://hackerworld.onrender.com/api/courses")      // Backend API URL; adjust as needed
             .then(res => res.json())
             .then(json => setCourses(json))
     }
