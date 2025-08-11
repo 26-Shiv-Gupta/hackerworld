@@ -1,4 +1,4 @@
-const Careers = require('../models/Careers');
+const Careers = require('../models/careers');
 
 // Get the Careers data
 const getCareers = async (req, res) => {
