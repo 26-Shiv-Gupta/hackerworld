@@ -12,6 +12,13 @@ import Course_desc from './components/Course_desc.jsx';
 
 import { createBrowserRouter, Router, RouterProvider } from 'react-router-dom';
 
+import { ClerkProvider } from '@clerk/clerk-react'
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error('Missing Publishable Key')
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,7 +29,7 @@ const router = createBrowserRouter([
       { path: "/courses", element: <Courses /> }, // "/courses"
       { path: "/careers", element: <Careers /> },  // "/careers"
       { path: "/contacts", element: <Contacts /> }, // "/contacts"
-      { path: "/course_desc", element: <Course_desc />}
+      { path: "/course_desc", element: <Course_desc /> }
       // add more routes here if needed
     ],
   },
@@ -30,6 +37,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <RouterProvider router={router} />
+    </ClerkProvider>
   </StrictMode>,
 )

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ShieldCheckIcon } from "@heroicons/react/solid";
 import { NavLink } from "react-router-dom";
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,8 +21,7 @@ const Navbar = () => {
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${
-                    isActive ? "text-white" : "text-gray-400"
+                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${isActive ? "text-white" : "text-gray-400"
                   }`
                 }
                 end
@@ -31,8 +31,7 @@ const Navbar = () => {
               <NavLink
                 to="/courses"
                 className={({ isActive }) =>
-                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${
-                    isActive ? "text-white" : "text-gray-400"
+                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${isActive ? "text-white" : "text-gray-400"
                   }`
                 }
               >
@@ -41,8 +40,7 @@ const Navbar = () => {
               <NavLink
                 to="/about"
                 className={({ isActive }) =>
-                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${
-                    isActive ? "text-white" : "text-gray-400"
+                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${isActive ? "text-white" : "text-gray-400"
                   }`
                 }
               >
@@ -51,8 +49,7 @@ const Navbar = () => {
               <NavLink
                 to="/careers"
                 className={({ isActive }) =>
-                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${
-                    isActive ? "text-white" : "text-gray-400"
+                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${isActive ? "text-white" : "text-gray-400"
                   }`
                 }
               >
@@ -71,17 +68,26 @@ const Navbar = () => {
               <NavLink
                 to="/contacts"
                 className={({ isActive }) =>
-                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${
-                    isActive ? "text-white" : "text-gray-400"
+                  `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${isActive ? "text-white" : "text-gray-400"
                   }`
                 }
               >
                 Contacts
               </NavLink>
 
-              <button className="bg-red-700 hover:bg-red-800 text-white px-5 py-2 rounded-lg font-semibold transition-colors">
-                Enroll Now
-              </button>
+              <SignedOut>
+                <SignInButton>
+                  <button
+                    className="w-full bg-red-700 cursor-pointer  hover:bg-red-800 text-white px-6 py-2 rounded-lg font-semibold"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Login
+                  </button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
             </div>
 
             {/* Mobile menu button */}
@@ -116,8 +122,7 @@ const Navbar = () => {
                   to="/"
                   end
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${
-                      isActive ? "text-white" : ""
+                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${isActive ? "text-white" : ""
                     }`
                   }
                   onClick={() => setIsMenuOpen(false)}
@@ -127,8 +132,7 @@ const Navbar = () => {
                 <NavLink
                   to="/courses"
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${
-                      isActive ? "text-white" : ""
+                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${isActive ? "text-white" : ""
                     }`
                   }
                   onClick={() => setIsMenuOpen(false)}
@@ -138,8 +142,7 @@ const Navbar = () => {
                 <NavLink
                   to="/about"
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${
-                      isActive ? "text-white" : ""
+                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${isActive ? "text-white" : ""
                     }`
                   }
                   onClick={() => setIsMenuOpen(false)}
@@ -149,8 +152,7 @@ const Navbar = () => {
                 <NavLink
                   to="/careers"
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${
-                      isActive ? "text-white" : ""
+                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${isActive ? "text-white" : ""
                     }`
                   }
                   onClick={() => setIsMenuOpen(false)}
@@ -171,20 +173,26 @@ const Navbar = () => {
                 <NavLink
                   to="/contacts"
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${
-                      isActive ? "text-white" : ""
+                    `block px-3 py-2 rounded-md font-medium text-gray-400 hover:text-red-600 ${isActive ? "text-white" : ""
                     }`
                   }
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Contacts
                 </NavLink>
-                <button
-                  className="w-full mt-2 bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg font-semibold"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Enroll Now
-                </button>
+                <SignedOut>
+                  <SignInButton>
+                    <button
+                      className="w-full mt-2 bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg font-semibold"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Login
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
               </div>
             </div>
           )}
