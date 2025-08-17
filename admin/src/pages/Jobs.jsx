@@ -1,43 +1,33 @@
-// --- Move JobModal OUTSIDE Jobs function ---
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-// Modal OUTSIDE so it preserves identity
-function JobModal({ type, onClose, onSubmit, jobForm, handleChange }) {
-  useEffect(() => {
-    const esc = (e) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", esc);
-    return () => window.removeEventListener("keydown", esc);
-  }, [onClose]);
-
+// Modal component for Add/Edit (define outside main component)
+function JobModal({ visible, onClose, onSubmit, job, handleChange }) {
+  if (!visible) return null;
   return (
-    <div className="fixed z-50 inset-0 flex items-center justify-center bg-black/50">
-      <div role="dialog" aria-modal="true" aria-labelledby="modal-heading" className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-        <button onClick={onClose} className="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-2xl" aria-label="Close">×</button>
-        <h3 id="modal-heading" className="text-lg font-bold mb-4">{type === "edit" ? "Edit Job" : "Add Job"}</h3>
-        <form onSubmit={onSubmit} className="space-y-3">
-          <label className="block">
-            <span className="text-gray-700">Title*</span>
-            <input type="text" name="title" value={jobForm.title ?? ""} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"/>
-          </label>
-          <label className="block">
-            <span className="text-gray-700">Department*</span>
-            <input type="text" name="dept" value={jobForm.dept ?? ""} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"/>
-          </label>
-          <label className="block">
-            <span className="text-gray-700">Location*</span>
-            <input type="text" name="location" value={jobForm.location ?? ""} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"/>
-          </label>
-          <label className="block">
-            <span className="text-gray-700">Type*</span>
-            <input type="text" name="type" value={jobForm.type ?? ""} onChange={handleChange} required className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"/>
-          </label>
-          <div className="flex gap-2 mt-4">
-            <button type="submit" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-              {type === "edit" ? "Update" : "Add"}
-            </button>
-            <button type="button" className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" onClick={onClose}>
-              Cancel
-            </button>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded max-w-md w-full relative">
+        <button onClick={onClose} className="absolute right-3 top-2 text-lg font-bold">×</button>
+        <h2 className="text-xl mb-4">{job._id ? "Edit Job" : "Add Job"}</h2>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <label className="block mb-1">Title</label>
+            <input type="text" name="title" value={job.title} onChange={handleChange} required className="w-full border px-3 py-2 rounded"/>
+          </div>
+          <div>
+            <label className="block mb-1">Department</label>
+            <input type="text" name="dept" value={job.dept} onChange={handleChange} required className="w-full border px-3 py-2 rounded"/>
+          </div>
+          <div>
+            <label className="block mb-1">Location</label>
+            <input type="text" name="location" value={job.location} onChange={handleChange} required className="w-full border px-3 py-2 rounded"/>
+          </div>
+          <div>
+            <label className="block mb-1">Type</label>
+            <input type="text" name="type" value={job.type} onChange={handleChange} required className="w-full border px-3 py-2 rounded"/>
+          </div>
+          <div className="flex justify-end space-x-2">
+            <button type="button" onClick={onClose} className="px-4 py-2 border rounded">Cancel</button>
+            <button type="submit" className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">{job._id ? "Update" : "Add"}</button>
           </div>
         </form>
       </div>
@@ -45,163 +35,148 @@ function JobModal({ type, onClose, onSubmit, jobForm, handleChange }) {
   );
 }
 
-// --- Main Jobs Component ---
 export default function Jobs() {
-  const [careers, setCareers] = useState(null);
+  const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [modalType, setModalType] = useState(null); // 'add' | 'edit' | null
-  const [editingJobIdx, setEditingJobIdx] = useState(null);
 
-  // Form for job
-  const [jobForm, setJobForm] = useState({ title: "", dept: "", location: "", type: "" });
+  // Modal state for add/edit
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentJob, setCurrentJob] = useState({
+    title: "",
+    dept: "",
+    location: "",
+    type: ""
+  });
 
-  // Fetch careers data
-  const fetchCareers = () => {
+  // Fetch jobs list
+  const fetchJobs = () => {
     setLoading(true);
-    fetch("https://hackerworld.onrender.com/api/careers")
-      .then(res => res.ok ? res.json() : Promise.reject("Failed to fetch careers"))
+    fetch("http://localhost:5000/api/careers")
+      .then(res => res.ok ? res.json() : Promise.reject("Failed to load jobs"))
       .then(data => {
-        setCareers(data);
+        setJobs(data);
         setError(null);
       })
-      .catch(err => setError(`${err}`))
+      .catch(err => setError(err.toString()))
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { fetchCareers(); }, []);
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
-  // Helpers for modal
-  const openAddModal = () => {
-    setModalType("add");
-    setEditingJobIdx(null);
-    setJobForm({ title: "", dept: "", location: "", type: "" });
+  // Open modal for add
+  const openAdd = () => {
+    setCurrentJob({ title: "", dept: "", location: "", type: "" });
+    setModalOpen(true);
   };
-  const openEditModal = (job, idx) => {
-    setModalType("edit");
-    setEditingJobIdx(idx);
-    setJobForm({ ...job }); // deep copy not needed for primitives
+
+  // Open modal for edit
+  const openEdit = (job) => {
+    setCurrentJob(job);
+    setModalOpen(true);
   };
+
+  // Close modal
   const closeModal = () => {
-    setModalType(null);
-    setEditingJobIdx(null);
-    setJobForm({ title: "", dept: "", location: "", type: "" });
+    setModalOpen(false);
+    setCurrentJob({ title: "", dept: "", location: "", type: "" });
   };
 
-  // Controlled form input
+  // Form input handler
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setJobForm(prev => ({ ...prev, [name]: value }));
+    setCurrentJob(prev => ({ ...prev, [name]: value }));
   };
 
-  // Add/edit job in jobs array, then update server
-  const handleJobSubmit = (e) => {
+  // Submit Add/Edit form
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Defensive clone
-    const updatedJobs = (careers?.jobs ?? []).map(j => ({ ...j }));
-    if (modalType === "add") {
-      updatedJobs.push({ ...jobForm });
-    } else if (modalType === "edit" && editingJobIdx !== null) {
-      updatedJobs[editingJobIdx] = { ...jobForm };
-    }
-    updateCareersOnServer({ jobs: updatedJobs, contactEmail: careers?.contactEmail ?? "" });
-    closeModal();
-  };
 
-  // Remove job by index
-  const handleDeleteJob = (idx) => {
-    if (!window.confirm("Are you sure you want to delete this job?")) return;
-    const updatedJobs = (careers?.jobs ?? []).filter((_, i) => i !== idx);
-    updateCareersOnServer({ jobs: updatedJobs, contactEmail: careers?.contactEmail ?? "" });
-  };
+    const method = currentJob._id ? "PUT" : "POST";
+    const url = currentJob._id ? `http://localhost:5000/api/careers/${currentJob._id}` : "http://localhost:5000/api/careers";
 
-  // Contact email update (avoiding issues with rapid typing by cloning)
-  const handleEmailChange = (e) => {
-    updateCareersOnServer({ jobs: (careers?.jobs ?? []).map(j => ({ ...j })), contactEmail: e.target.value });
-  };
-
-  // Only keep shape fields in PUT
-  const updateCareersOnServer = (payload) => {
-    setLoading(true);
-    // Strip _id, __v, etc. from jobs:
-    const jobs = payload.jobs.map(({ title, dept, location, type }) => ({ title, dept, location, type }));
-    fetch("https://hackerworld.onrender.com/api/careers", {
-      method: "PUT",
+    fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ jobs, contactEmail: payload.contactEmail }),
+      body: JSON.stringify(currentJob),
     })
-      .then(res => (res.ok ? res.json() : Promise.reject("Failed to update careers")))
-      .then(() => fetchCareers())
-      .catch(err => setError(`${err}`))
-      .finally(() => setLoading(false));
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to save job");
+        return res.json();
+      })
+      .then(() => {
+        fetchJobs();
+        closeModal();
+      })
+      .catch(err => alert(err.toString()));
   };
 
-  // --- Render ---
+  // Delete job
+  const handleDelete = (id) => {
+    if (!window.confirm("Delete this job?")) return;
+    fetch(`http://localhost:5000/api/careers/${id}`, { method: "DELETE" })
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to delete job");
+        fetchJobs();
+      })
+      .catch(err => alert(err.toString()));
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Job Openings</h2>
-        <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onClick={openAddModal}>
+        <h1 className="text-xl font-bold">Jobs</h1>
+        <button onClick={openAdd} className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
           Add Job
         </button>
       </div>
-      {/* Edit contact email */}
-      {careers && (
-        <div className="mb-4">
-          <label className="font-semibold text-gray-700 mr-2">Contact Email:</label>
-          <input
-            type="email"
-            value={careers.contactEmail ?? ""}
-            onChange={handleEmailChange}
-            className="border border-gray-300 rounded px-3 py-2"
-            required
-          />
-        </div>
-      )}
-      {modalType && (
-        <JobModal
-          type={modalType}
-          onClose={closeModal}
-          onSubmit={handleJobSubmit}
-          jobForm={jobForm}
-          handleChange={handleChange}
-        />
-      )}
-      {loading ? (
-        <p>Loading jobs...</p>
-      ) : error ? (
-        <p className="text-red-600">Error: {error}</p>
-      ) : (careers && careers.jobs && careers.jobs.length > 0 ? (
-        <div className="overflow-auto">
-          <table className="w-full bg-white rounded shadow">
-            <thead>
-              <tr className="bg-gray-200 text-left">
-                <th className="p-2">Title</th>
-                <th className="p-2">Department</th>
-                <th className="p-2">Location</th>
-                <th className="p-2">Type</th>
-                <th className="p-2">Actions</th>
+
+      {loading && <p>Loading jobs...</p>}
+      {error && <p className="text-red-600">Error: {error}</p>}
+
+      {jobs.length > 0 ? (
+        <table className="w-full bg-white rounded shadow">
+          <thead>
+            <tr className="bg-gray-200 text-left">
+              <th className="p-2">Title</th>
+              <th className="p-2">Department</th>
+              <th className="p-2">Location</th>
+              <th className="p-2">Type</th>
+              <th className="p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {jobs.map(job => (
+              <tr key={job._id}>
+                <td className="p-2">{job.title}</td>
+                <td className="p-2">{job.dept}</td>
+                <td className="p-2">{job.location}</td>
+                <td className="p-2">{job.type}</td>
+                <td className="p-2 space-x-2">
+                  <button onClick={() => openEdit(job)} className="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500">
+                    Edit
+                  </button>
+                  <button onClick={() => handleDelete(job._id)} className="bg-red-600 px-3 py-1 rounded text-white hover:bg-red-700">
+                    Delete
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {careers.jobs.map((job, idx) => (
-                <tr key={idx} className="border-b">
-                  <td className="p-2">{job.title}</td>
-                  <td className="p-2">{job.dept}</td>
-                  <td className="p-2">{job.location}</td>
-                  <td className="p-2">{job.type}</td>
-                  <td className="p-2 space-x-2">
-                    <button onClick={() => openEditModal(job, idx)} className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded">Edit</button>
-                    <button onClick={() => handleDeleteJob(idx)} className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       ) : (
-        <p>No jobs available.</p>
-      ))}
+        !loading && <p>No jobs found.</p>
+      )}
+
+      <JobModal
+        visible={modalOpen}
+        onClose={closeModal}
+        onSubmit={handleSubmit}
+        job={currentJob}
+        handleChange={handleChange}
+      />
     </div>
   );
 }

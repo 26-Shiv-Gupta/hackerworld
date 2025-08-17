@@ -8,3 +8,4 @@ const CareersSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Careers', CareersSchema);
+  
