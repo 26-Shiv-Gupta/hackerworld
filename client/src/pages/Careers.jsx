@@ -1,17 +1,20 @@
-import React from 'react'
+import { React, useEffect, useState } from 'react'
 import { AcademicCapIcon, UserGroupIcon, ShieldCheckIcon, BriefcaseIcon } from "@heroicons/react/solid";
 
-const jobs = [
-  { title: "Cybersecurity Instructor", dept: "Course Development", location: "Remote/Hybrid", type: "Full-Time" },
-  { title: "Lab Content Creator", dept: "Learning Experience", location: "Remote", type: "Contract" },
-  { title: "Community Manager", dept: "Marketing", location: "Remote/On-site", type: "Full-Time" },
-  { title: "Curriculum Developer", dept: "Education", location: "Remote", type: "Full-Time" },
-  { title: "Frontend React Developer", dept: "Engineering", location: "Remote/On-site", type: "Full-Time" },
-  { title: "Student Support Specialist", dept: "Learner Success", location: "On-site/Remote", type: "Part-Time" },
-  { title: "Marketing Coordinator", dept: "Marketing", location: "On-site", type: "Full-Time" }
-];
-
 const Careers = () => {
+
+  const [jobs, setJobs] = useState([]);
+
+  const getJobs = () => {
+    fetch("http://localhost:5000/api/careers")      // Backend API URL; adjust as needed
+      .then(res => res.json())
+      .then(json => setJobs(json))
+  }
+
+  useEffect(() => {
+    getJobs();
+  }, []);
+
   return (
     <>
       <main className="bg-black min-h-screen py-16 px-4">

@@ -1,12 +1,3 @@
-import {
-    LockClosedIcon,
-    AcademicCapIcon,
-    CodeIcon,
-    ShieldCheckIcon,
-    DeviceMobileIcon,
-    DatabaseIcon,
-    CloudIcon,
-} from "@heroicons/react/solid";
 import Course_card from '../components/Course_card';
 import { useNavigate } from 'react-router-dom';
 import { React, useEffect, useState } from 'react';
