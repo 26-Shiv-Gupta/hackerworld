@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { ShieldCheckIcon } from "@heroicons/react/solid";
 import { NavLink } from "react-router-dom";
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from '@clerk/clerk-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { user, isLoaded } = useUser();
+  if (!isLoaded) return null;
+  const isAdmin = user?.publicMetadata?.role === "admin";
   return (
     <>
       <nav className="sticky top-0 z-50 bg-black border-b border-gray-800">
@@ -88,6 +92,14 @@ const Navbar = () => {
               <SignedIn>
                 <UserButton />
               </SignedIn>
+              {isAdmin && (
+                <a
+                  href="http://localhost:5173/"
+                  className="w-full bg-red-700 cursor-pointer hover:bg-red-800 text-white px-4 py-2 rounded-lg font-semibold"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </a>)}
             </div>
 
             {/* Mobile menu button */}
