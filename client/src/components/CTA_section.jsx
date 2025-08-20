@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const CTA_section = () => {
   return (
@@ -14,9 +15,9 @@ const CTA_section = () => {
           <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg shadow-red-500/20">
             Start Free Trial
           </button>
-          <button className="border border-red-500 hover:bg-red-600 hover:text-white text-red-500 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+          <NavLink to="/courses" className="border border-red-500 hover:bg-red-600 hover:text-white text-red-500 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
             View All Courses
-          </button>
+          </NavLink>
         </div>
       </div>
     </section>

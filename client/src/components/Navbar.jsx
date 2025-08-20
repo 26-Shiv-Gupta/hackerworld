@@ -92,9 +92,10 @@ const Navbar = () => {
               <SignedIn>
                 <UserButton />
               </SignedIn>
+
               {isAdmin && (
                 <a
-                  href="http://localhost:5173/"
+                  href="http://localhost:5174/"
                   className="w-full bg-red-700 cursor-pointer hover:bg-red-800 text-white px-4 py-2 rounded-lg font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -205,6 +206,15 @@ const Navbar = () => {
                 <SignedIn>
                   <UserButton />
                 </SignedIn>
+
+                {isAdmin && (
+                <a
+                  href="http://localhost:5174/"
+                  className="block w-full mt-2 bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg font-semibold"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </a>)}
               </div>
             </div>
           )}

@@ -12,7 +12,7 @@ const Courses_section = () => {
     const [courses, setCourses] = useState([]);
 
     const getCourses = () => {
-        fetch("https://hackerworld.onrender.com/api/homeCourses")      // Backend API URL; adjust as needed
+        fetch("https://hackerworld.onrender.com/api/courses")      // Backend API URL; adjust as needed
             .then(res => res.json())
             .then(json => setCourses(json))
     }
@@ -38,11 +38,11 @@ const Courses_section = () => {
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        {courses.map((course, index) => (
+                        {courses.slice(0, 3).map((course, index) => (
                             <Course_card
                                 key={index}
                                 image={course.image}
-                                title={course.title}
+                                title={course.title}    
                                 description={course.description}
                                 duration={course.duration}
                                 level={course.level}

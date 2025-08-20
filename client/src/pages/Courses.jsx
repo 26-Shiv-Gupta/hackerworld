@@ -54,17 +54,23 @@ const Courses = () => {
                 {/* Course Grid */}
                 <section className="max-w-7xl mx-auto">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {courses.map((course, index) => (
-                            <Course_card 
-                            key={index}
-                            image={course.image}
-                            title={course.title}
-                            description={course.description}
-                            duration={course.duration}
-                            level={course.level}
-                            onLearnMore={() => navigate('/course_desc', { state: course })}
-                            />
-                        ))}
+                        {courses.length === 0 ? (
+                            Array(6).fill(0).map((_, i) => (
+                                <div key={i} className="animate-pulse bg-gray-800 h-64 rounded-lg" />
+                            ))
+                        ) : (
+                            courses.map(course => (
+                                <Course_card
+                                    key={course._id}
+                                    image={course.image}
+                                    title={course.title}
+                                    description={course.description}
+                                    duration={course.duration}
+                                    level={course.level}
+                                    onLearnMore={() => navigate('/course_desc', { state: course })}
+                                />
+                            ))
+                        )}
                     </div>
                 </section>
             </main>
