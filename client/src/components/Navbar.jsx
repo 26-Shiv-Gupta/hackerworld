@@ -59,16 +59,19 @@ const Navbar = () => {
               >
                 Careers
               </NavLink>
-              {/* <NavLink
-                to="/certifications"
+              <SignedIn>
+              <NavLink
+                to="/My_courses"
                 className={({ isActive }) =>
                   `hover:text-red-600 transition-colors px-3 py-2 rounded-md font-medium ${
                     isActive ? "text-white" : "text-gray-400"
                   }`
                 }
               >
-                Certifications
-              </NavLink> */}
+                MyCourses
+              </NavLink>
+              </SignedIn>
+
               <NavLink
                 to="/contacts"
                 className={({ isActive }) =>
