@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv').config()
 const connectDB = require('./config/db');
 const { clerkWebhooks } = require('./controllers/webhooks');
-const { default: educatorRouter } = require('./routes/educatorRoutes');
+const educatorRouter = require('./routes/educatorRoutes');
 const {clerkMiddleware} = require('@clerk/express')
 
 // Port
