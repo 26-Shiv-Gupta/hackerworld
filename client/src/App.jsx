@@ -11,7 +11,7 @@ function App() {
       <main className="min-h-screen bg-gray-900 text-white">
         <Outlet />
       </main>
-      <Footer /> 
+      <Footer />
     </>
   )
 }

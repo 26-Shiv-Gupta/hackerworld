@@ -1,22 +1,11 @@
 import Course_card from '../components/Course_card';
 import { useNavigate } from 'react-router-dom';
-import { React, useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 
 const Courses = () => {
 
-    const [courses, setCourses] = useState([]);       // <-- state for courses
-    // const [loading, setLoading] = useState(true);     // optional loading state
-    // const [error, setError] = useState(null);
-
-    const getCourses = () => {
-        fetch("https://hackerworld.onrender.com/api/courses")      // Backend API URL; adjust as needed
-            .then(res => res.json())
-            .then(json => setCourses(json))
-    }
-
-    useEffect(() => {
-        getCourses();
-    }, []);
+    const { courses, loadingCourses, errorCourses} = useContext(AppContext);
 
     const navigate = useNavigate();
 

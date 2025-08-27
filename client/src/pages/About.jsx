@@ -1,9 +1,4 @@
 import React from "react";
-import {
-  AcademicCapIcon,
-  ShieldCheckIcon,
-  UserGroupIcon,
-} from "@heroicons/react/solid";
 
 const About = () => {
   return (

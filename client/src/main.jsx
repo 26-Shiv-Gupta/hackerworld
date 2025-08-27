@@ -12,6 +12,7 @@ import Course_desc from './components/Course_desc.jsx';
 
 import { createBrowserRouter, Router, RouterProvider } from 'react-router-dom';
 
+import { AppContextProvider } from './context/AppContext.jsx';
 import { ClerkProvider } from '@clerk/clerk-react'
 import My_courses from './pages/MyCourses.jsx';
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -23,7 +24,11 @@ if (!PUBLISHABLE_KEY) {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // This is your main layout wrapper, includes Navbar/Footer
+    element: (
+      <AppContextProvider>
+        <App />
+      </AppContextProvider>
+    ), // This is your main layout wrapper, includes Navbar/Footer
     children: [
       { index: true, element: <Home /> },         // "/" 
       { path: "/about", element: <About /> },     // "/about"

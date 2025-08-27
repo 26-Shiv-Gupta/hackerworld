@@ -1,27 +1,16 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Ethical_hacking_img from '../assets/Ethical_hacking.jpeg';
 import Penetration_testing_img from '../assets/penetration_testing.png';
 import Web_application_security_img from '../assets/web_application_security.jpg';
 import Course_card from './Course_card';
+import { AppContext } from '../context/AppContext';
 
 
 
 const Courses_section = () => {
-    const [courses, setCourses] = useState([]);
-
-    const getCourses = () => {
-        fetch("https://hackerworld.onrender.com/api/courses")      // Backend API URL; adjust as needed
-            .then(res => res.json())
-            .then(json => setCourses(json))
-    }
-
-    useEffect(() => {
-        getCourses();
-    }, []);
-
-    const navigate = useNavigate();
+    const { courses, loadingCourses, errorCourses, navigate } = useContext(AppContext);
 
     return (
         <>
