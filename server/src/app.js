@@ -1,33 +1,42 @@
-const express = require('express')
+// server/src/app.js
+const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv').config()
+require('dotenv').config();
 const connectDB = require('./config/db');
 const { clerkWebhooks } = require('./controllers/webhooks');
 const educatorRouter = require('./routes/educatorRoutes');
-const {clerkMiddleware} = require('@clerk/express')
+const { clerkMiddleware } = require('@clerk/express');
 
-// Port
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
+const app = express();
 
-// Initialize Express
-const app = express()
+// CORS - allow Authorization header from frontend as well
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-// Connet to DataBase
-connectDB()
+// Connect DB
+connectDB();
 
-// Middleware
-app.use(cors());
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
-app.use(clerkMiddleware())
+// Clerk middleware
+app.use(clerkMiddleware());
 
+// IMPORTANT: mount stripe webhook BEFORE body parsers so stripe can access raw body for signature verification
+app.use('/api', require('./routes/stripeWebhook'));
 
-// Routes
-app.post('/clerk', express.json(), clerkWebhooks)
-app.use('/api/educator', express.json(), educatorRouter)
-app.use('/api/courses', require('./routes/courseRoutes'))
-app.use('/api/careers', require('./routes/careerRoutes'))
-app.use('/api/homeCourses', require('./routes/homeCoursesRoutes'))
-app.use('/api/homeReviews', require('./routes/homeReviewsRoutes'))
+// Body parsers for all other routes
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.listen(port, () => console.log(`server started on port ${port}`))
+// Other routes
+app.post('/clerk', express.json(), clerkWebhooks);
+app.use('/api/educator', educatorRouter);
+app.use('/api/courses', require('./routes/courseRoutes'));
+app.use('/api/careers', require('./routes/careerRoutes'));
+app.use('/api/homeCourses', require('./routes/homeCoursesRoutes'));
+app.use('/api/homeReviews', require('./routes/homeReviewsRoutes'));
+app.use('/api/payment', require('./routes/paymentRoutes'));
+
+app.listen(port, () => console.log(`server started on port ${port}`));

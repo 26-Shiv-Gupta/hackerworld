@@ -7,6 +7,9 @@ import {
     StarIcon,
 } from "@heroicons/react/solid";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe('pk_test_51RzK2SBgVAaIgF2Jj0WgX6G47LihWFMzzYsQxpoPmVEEE0Yuhbdu1rEqyakzKgnSgp6JmUoQ6nWBkGnQJyqyjMl500IiT4MbCS');
 
 const Course_desc = () => {
     const [openIdx, setOpenIdx] = useState(null);
@@ -17,7 +20,9 @@ const Course_desc = () => {
         window.scrollTo(0, 0);
     }, []);
 
+    const navigate = useNavigate();
     return (
+
         <>
             <main className="bg-black min-h-screen py-12 px-4 text-white flex justify-center">
                 <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-10">
@@ -120,11 +125,9 @@ const Course_desc = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <a href={course.enrollmentLink}>
-                                <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-lg transition-colors shadow-lg shadow-red-700/20">
-                                    Enroll Now
-                                </button>
-                            </a>
+                            <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-lg transition-colors shadow-lg shadow-red-700/20" onClick={() => navigate(`/pay/${course._id}`)}>
+                                Enroll Now
+                            </button>
                         </div>
                     </aside>
                 </div>
