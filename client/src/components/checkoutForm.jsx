@@ -14,11 +14,16 @@ const CheckoutForm = ({ courseId, onSuccess }) => {
     setLoading(true);
 
     // 1. Call backend to create a PaymentIntent
-    const res = await fetch("/api/payment/create-intent", {
+    // const res = await fetch("/api/payment/create-intent", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ courseId }),
+    //   credentials: "include",
+    // });
+    const res = await fetch("/api/payment/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseId }),
-      credentials: "include",
+      body: JSON.stringify({ courseId }),   // send courseId here
     });
     const { clientSecret } = await res.json();
 
