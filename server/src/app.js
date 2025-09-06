@@ -12,7 +12,11 @@ const app = express();
 
 // CORS - allow Authorization header from frontend as well
 app.use(cors({
-  origin: 'https://techhackworld.onrender.com',
+  origin: [
+    'https://techhackworld.onrender.com',
+    "https://hackerworld.onrender.com",
+    "http://localhost:5173"
+  ],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
