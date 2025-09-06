@@ -12,7 +12,7 @@ const app = express();
 
 // CORS - allow Authorization header from frontend as well
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://hackerworld.onrender.com',
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));

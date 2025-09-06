@@ -16,7 +16,7 @@ export const AppContextProvider = ({ children }) => {
     // Fetch all courses
     const fetchCourses = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/courses");
+            const res = await fetch("https://hackerworld.onrender.com/api/courses");
             const data = await res.json();
             setCourses(data);
         } catch (error) {
@@ -27,7 +27,7 @@ export const AppContextProvider = ({ children }) => {
     // Fetch testimonials
     const fetchTestimonials = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/homeReviews");
+            const res = await fetch("https://hackerworld.onrender.com/api/homeReviews");
             const data = await res.json();
             setTestimonials(data);
         } catch (error) {
@@ -38,7 +38,7 @@ export const AppContextProvider = ({ children }) => {
     // Fetch testimonials
     const fetchCareers = async () => {
         try {
-            const res = await fetch("http://localhost:5000/api/careers");
+            const res = await fetch("https://hackerworld.onrender.com/api/careers");
             const data = await res.json();
             setCareers(data);
         } catch (error) {

@@ -57,7 +57,7 @@ export default function PaymentPage() {
     const createIntent = async () => {
       try {
         const token = await getToken(); // Clerk session token
-        const res = await fetch("http://localhost:5000/api/payment/create-intent", {
+        const res = await fetch("https://hackerworld.onrender.com/api/payment/create-intent", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
