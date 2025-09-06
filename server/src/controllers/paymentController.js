@@ -1,29 +1,27 @@
-const Stripe = require("stripe");
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const Course = require("../models/course"); // ✅ Import the model
 
-const createPaymentIntent = async (req, res) => {
+exports.createPaymentIntent = async (req, res) => {
   try {
     const { courseId } = req.body;
+    console.log("Received courseId:", courseId);
 
-    if (!courseId) {
-      return res.status(400).json({ error: "Course ID is required" });
+    // Find course in DB
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
     }
 
-    // Example: fetch course price from DB instead of hardcoding
-    const course = await Course.findOne({ courseId });
-    if (!course) return res.status(404).json({ error: "Course not found" });
-
+    // Create Stripe payment intent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: course.price, // in smallest unit (e.g., 5000 = ₹50.00)
-      currency: "inr",      // must be INR for UPI
-      automatic_payment_methods: { enabled: true }, // enables cards, upi, wallets, netbanking
+      amount: course.price * 100, // convert ₹3499 to paise
+      currency: "inr",            // change to "usd" if charging in dollars
+      automatic_payment_methods: { enabled: true },
     });
 
     res.json({ clientSecret: paymentIntent.client_secret });
   } catch (err) {
     console.error("Stripe error:", err);
-    res.status(500).json({ error: "Failed to create payment intent" });
+    res.status(500).json({ error: err.message });
   }
 };
-
-module.exports = { createPaymentIntent };
