@@ -1,74 +1,49 @@
-import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useState, useEffect } from "react";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { useState } from "react";
 
 const CheckoutForm = ({ courseId, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const [clientSecret, setClientSecret] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 1. Fetch clientSecret from backend when component mounts
-  useEffect(() => {
-    const createIntent = async () => {
-      try {
-        const res = await fetch("/api/payment/create-intent", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ courseId }),
-          credentials: "include", // keep auth cookies/session
-        });
-        const data = await res.json();
-        if (data.clientSecret) {
-          setClientSecret(data.clientSecret);
-        } else {
-          setStatus(data.error || "Failed to create payment intent");
-        }
-      } catch (err) {
-        setStatus("Server error: " + err.message);
-      }
-    };
-    createIntent();
-  }, [courseId]);
-
-  // 2. Handle payment submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setStatus("");
+    setLoading(true);
 
-    if (!stripe || !elements) {
-      setLoading(false);
-      return;
-    }
+    // 1. Call backend to create a PaymentIntent
+    const res = await fetch("/api/payment/create-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ courseId }),
+      credentials: "include", // include session cookies (for Clerk/your auth)
+    });
+    const { clientSecret } = await res.json();
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: window.location.origin + "/payment-success",
+    // 2. Collect card details and confirm payment
+    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
       },
     });
 
+    // 3. Handle result
     if (error) {
       setStatus(error.message);
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      setStatus("✅ Payment successful! Course access granted.");
+    } else if (paymentIntent.status === "succeeded") {
+      setStatus("Payment successful! Course access will be granted soon.");
       if (onSuccess) onSuccess();
-    } else {
-      setStatus("Processing payment...");
     }
     setLoading(false);
   };
 
-  // 3. Render payment UI
-  if (!clientSecret) return <div className="text-white">Loading payment form...</div>;
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4 bg-gray-800 p-6 rounded">
-      <PaymentElement /> {/* This shows card, UPI, wallets, netbanking automatically */}
+      <CardElement className="bg-white p-3 rounded" />
       <button
         disabled={!stripe || loading}
-        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-semibold w-full"
+        className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-semibold"
         type="submit"
       >
         {loading ? "Processing..." : "Pay"}
