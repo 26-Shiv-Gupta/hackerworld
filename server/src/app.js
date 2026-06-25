@@ -16,6 +16,7 @@ app.use(cors({
     'https://techhackworld.onrender.com',
     "https://hackerworld.onrender.com",
     "http://localhost:5173", 
+    "http://localhost:5174", 
     "https://hackerworld-admin.onrender.com"
   ],
   credentials: true,
