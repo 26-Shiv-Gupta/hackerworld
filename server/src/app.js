@@ -5,7 +5,7 @@ const connectDB = require('./config/db'); // MongoDB se connection establish kar
 const { clerkWebhooks } = require('./controllers/webhooks'); // Clerk webhook controller. Clerk se aane wale events (user create, delete, update) handle karega.
 const educatorRouter = require('./routes/educatorRoutes'); // Educator-related routes. Teacher/educator ke APIs yahan define hongi.
 const { clerkMiddleware } = require('@clerk/express'); // Clerk authentication middleware. User login/authentication verify karta hai.
-const paymentRoutes = require('./routes/paymentRoutes') // Payment-related routes. Payment create, verify, success, failure etc. handle karenge.
+// const paymentRoutes = require('./routes/paymentRoutes') // Payment-related routes. Payment create, verify, success, failure etc. handle karenge.
 
 const port = process.env.PORT || 5000;
 const app = express();
