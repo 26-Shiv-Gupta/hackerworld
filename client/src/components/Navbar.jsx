@@ -98,7 +98,7 @@ const Navbar = () => {
 
               {isAdmin && (
                 <a
-                  href="http://localhost:5174/"
+                  href="https://hackerworld-admin.onrender.com"
                   className="w-full bg-red-700 cursor-pointer hover:bg-red-800 text-white px-4 py-2 rounded-lg font-semibold"
                   onClick={() => setIsMenuOpen(false)}
                 >
