@@ -38,3 +38,5 @@ const Course_card = ({index, image, title, description, duration, level, onLearn
 }
 
 export default Course_card
+
+

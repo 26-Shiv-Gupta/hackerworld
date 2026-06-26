@@ -35,7 +35,7 @@ export const AppContextProvider = ({ children }) => {
         }
     };
 
-    // Fetch testimonials
+    // Fetch Careers
     const fetchCareers = async () => {
         try {
             const res = await fetch("https://hackerworld.onrender.com/api/careers");

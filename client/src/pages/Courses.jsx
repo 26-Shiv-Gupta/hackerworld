@@ -5,7 +5,7 @@ import { AppContext } from '../context/AppContext';
 
 const Courses = () => {
 
-    const { courses, loadingCourses, errorCourses} = useContext(AppContext);
+    const { courses} = useContext(AppContext);
 
     const navigate = useNavigate();
 

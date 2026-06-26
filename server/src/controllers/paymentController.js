@@ -1,27 +1,41 @@
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const Course = require("../models/course"); // ✅ Import the model
+const razorpay = require("../config/razorpay");
+const crypto = require("crypto");
 
-exports.createPaymentIntent = async (req, res) => {
+// ORDER CREATE
+exports.createOrder = async (req, res) => {
   try {
-    const { courseId } = req.body;
-    console.log("Received courseId:", courseId);
+    const { amount } = req.body;
 
-    // Find course in DB
-    const course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ error: "Course not found" });
-    }
-
-    // Create Stripe payment intent
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: course.price * 100, // convert ₹3499 to paise
-      currency: "inr",            // change to "usd" if charging in dollars
-      automatic_payment_methods: { enabled: true },
+    const order = await razorpay.orders.create({
+      amount: amount * 100, // rupees → paise
+      currency: "INR",
+      receipt: "edu_course_001",
     });
 
-    res.json({ clientSecret: paymentIntent.client_secret });
-  } catch (err) {
-    console.error("Stripe error:", err);
-    res.status(500).json({ error: err.message });
+    res.status(200).json(order);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// PAYMENT VERIFY
+exports.verifyPayment = (req, res) => {
+  const {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+  } = req.body;
+
+  const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+  const expectedSignature = crypto
+    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+    .update(body)
+    .digest("hex");
+
+  if (expectedSignature === razorpay_signature) {
+    res.status(200).json({ success: true });
+  } else {
+    res.status(400).json({ success: false });
   }
 };

@@ -196,6 +196,7 @@ const Navbar = () => {
                 >
                   Contacts
                 </NavLink>
+                
                 <SignedOut>
                   <SignInButton>
                     <button
