@@ -16,8 +16,8 @@ const homeReviewsRoutes = require("./routes/homeReviewsRoutes");
 // const paymentRoutes = require("./routes/paymentRoutes");
 
 // New Routes
-const webhookRoutes = require("./routes/webhook.routes");
-const userRoutes = require("./routes/user.routes");
+const webhookRoutes = require("./routes/webhookRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
