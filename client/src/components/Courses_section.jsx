@@ -10,7 +10,7 @@ import { AppContext } from '../context/AppContext';
 
 
 const Courses_section = () => {
-    const { courses, loadingCourses, errorCourses, navigate } = useContext(AppContext);
+    const { threeCourses } = useContext(AppContext);
 
     return (
         <>
@@ -27,7 +27,7 @@ const Courses_section = () => {
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        {courses.slice(0, 3).map((course, index) => (
+                        {threeCourses.map((course, index) => (
                             <Course_card
                                 key={index}
                                 image={course.image}

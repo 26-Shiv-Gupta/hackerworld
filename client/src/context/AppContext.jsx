@@ -12,6 +12,7 @@ export const AppContextProvider = ({ children }) => {
     const [courses, setCourses] = useState([]);
     const [testimonials, setTestimonials] = useState([]);
     const [careers, setCareers] = useState([]);
+    const [threeCourses, setThreeCourses] = useState([]);
 
     // Fetch all courses
     const fetchCourses = async () => {
@@ -19,6 +20,9 @@ export const AppContextProvider = ({ children }) => {
             const res = await fetch("https://hackerworld.onrender.com/api/courses");
             const data = await res.json();
             setCourses(data);
+            console.log("courses");
+            const three_courses = data.slice(0, 3);
+            setThreeCourses(three_courses);
         } catch (error) {
             console.error("Failed to fetch courses:", error);
         }
@@ -30,6 +34,7 @@ export const AppContextProvider = ({ children }) => {
             const res = await fetch("https://hackerworld.onrender.com/api/homeReviews");
             const data = await res.json();
             setTestimonials(data);
+            console.log("testimonial");
         } catch (error) {
             console.error("Failed to fetch testimonials:", error);
         }
@@ -41,6 +46,7 @@ export const AppContextProvider = ({ children }) => {
             const res = await fetch("https://hackerworld.onrender.com/api/careers");
             const data = await res.json();
             setCareers(data);
+            console.log("career");
         } catch (error) {
             console.error("Failed to fetch testimonials:", error);
         }
@@ -68,6 +74,7 @@ export const AppContextProvider = ({ children }) => {
             value={{
                 courses,
                 setCourses,
+                threeCourses,
                 testimonials,
                 setTestimonials,
                 careers,
