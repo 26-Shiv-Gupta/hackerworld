@@ -62,6 +62,8 @@ const clerkWebhookHandler = async (req, res) => {
           profileImage: data.image_url || "",
         };
 
+        console.log("hello " + data.id);
+
         // Agar pehle se hai (duplicate webhook retry case) to upsert kar do
         await User.findOneAndUpdate(
           { clerkId: newUser.clerkId },

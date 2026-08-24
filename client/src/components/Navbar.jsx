@@ -9,6 +9,7 @@ const Navbar = () => {
   const { user, isLoaded } = useUser();
   if (!isLoaded) return null;
   const isAdmin = user?.publicMetadata?.role === "admin";
+  
   return (
     <>
       <nav className="sticky top-0 z-50 bg-black border-b border-gray-800">
