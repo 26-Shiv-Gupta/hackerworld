@@ -1,7 +1,7 @@
-import express from "express";
-import Stripe from "stripe";
-import { requireAuth } from "@clerk/express";
-import Course from "../models/course.js";
+const express = require("express");
+const Stripe = require("stripe");
+const { requireAuth } = require("@clerk/express");
+const Course = require("../models/course");
 
 const router = express.Router();
 
@@ -14,14 +14,13 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
         // Get courseId from frontend
         const { courseId } = req.body;
 
-        // Validate courseId 
+        // Validate courseId
         if (!courseId) {
             return res.status(400).json({
                 success: false,
                 message: "Course ID is required",
             });
         }
-
 
         // Find course in MongoDB
         const course = await Course.findById(courseId);
@@ -33,7 +32,6 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
             });
         }
 
-
         // Get course price
         const amount = course.price;
 
@@ -44,7 +42,6 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
             });
         }
 
-
         // Create Stripe PaymentIntent
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(amount * 100),
@@ -54,7 +51,6 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
                 courseId: course._id.toString(),
             },
         });
-
 
         // Send client secret to frontend
         res.status(200).json({
@@ -72,4 +68,4 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
     }
 });
 
-export default router;
+module.exports = router;
