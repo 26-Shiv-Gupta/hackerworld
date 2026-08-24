@@ -91,7 +91,7 @@ app.use("/api/homeCourses", homeCoursesRoutes);
 
 app.use("/api/homeReviews", homeReviewsRoutes);
 
-// app.use("/api/payment", paymentRoutes);
+app.use("/api/payment", paymentRoutes);
 
 /* ======================================================
    HEALTH CHECK

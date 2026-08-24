@@ -15,6 +15,7 @@ const Course_desc = () => {
     const [openIdx, setOpenIdx] = useState(null);
     const location = useLocation();
     const course = location.state;
+    const courseId = course._id;
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -125,7 +126,7 @@ const Course_desc = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-lg transition-colors shadow-lg shadow-red-700/20" onClick={() => navigate(`/pay/${course._id}`)}>
+                            <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-lg transition-colors shadow-lg shadow-red-700/20" onClick={() => navigate(`/pay/:courseId`)}>
                                 Enroll Now
                             </button>
                         </div>
