@@ -14,7 +14,7 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
         // Get courseId from frontend
         const { courseId } = req.body;
 
-        // Validate courseId
+        // Validate courseId 
         if (!courseId) {
             return res.status(400).json({
                 success: false,
