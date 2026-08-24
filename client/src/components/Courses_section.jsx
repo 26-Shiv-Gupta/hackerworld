@@ -10,7 +10,9 @@ import { AppContext } from '../context/AppContext';
 
 
 const Courses_section = () => {
+    
     const { threeCourses } = useContext(AppContext);
+    const navigate = useNavigate();
 
     return (
         <>
