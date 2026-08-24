@@ -13,7 +13,7 @@ const courseRoutes = require("./routes/courseRoutes");
 const careerRoutes = require("./routes/careerRoutes");
 const homeCoursesRoutes = require("./routes/homeCoursesRoutes");
 const homeReviewsRoutes = require("./routes/homeReviewsRoutes");
-// const paymentRoutes = require("./routes/paymentRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 // New Routes
 const webhookRoutes = require("./routes/webhookRoutes");
