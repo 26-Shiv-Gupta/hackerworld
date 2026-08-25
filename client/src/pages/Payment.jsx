@@ -84,7 +84,7 @@ export default function PaymentPage() {
   return (
     <Elements stripe={stripePromise} options={options}>
       <h2 className="text-2xl font-bold text-white mb-4 text-center">Complete Your Payment</h2>
-      <CheckoutForm clientSecret={clientSecret} />
+      <PaymentElement />
     </Elements>
   );
 }

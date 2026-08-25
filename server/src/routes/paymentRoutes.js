@@ -47,6 +47,10 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
             amount: Math.round(amount * 100),
             currency: "inr",
 
+            automatic_payment_methods: {
+                enabled: true,
+            },
+
             metadata: {
                 courseId: course._id.toString(),
             },
