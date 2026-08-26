@@ -27,7 +27,7 @@ function CheckoutForm({ clientSecret }) {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: window.location.origin + "/payment-success",
+        return_url: window.location.origin + "/payment-result",
       },
     });
 
@@ -84,7 +84,7 @@ export default function PaymentPage() {
   return (
     <Elements stripe={stripePromise} options={options}>
       <h2 className="text-2xl font-bold text-white mb-4 text-center">Complete Your Payment</h2>
-      <PaymentElement />
+      <CheckoutForm clientSecret={clientSecret} />
     </Elements>
   );
 }

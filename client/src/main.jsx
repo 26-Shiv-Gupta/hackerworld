@@ -16,6 +16,9 @@ import { createBrowserRouter, Router, RouterProvider } from 'react-router-dom';
 import { AppContextProvider } from './context/AppContext.jsx';
 import { ClerkProvider } from '@clerk/clerk-react'
 import My_courses from './pages/MyCourses.jsx';
+import PaymentSuccess from './components/PaymentSuccess.jsx';
+import PaymentResult from './components/PaymentResult.jsx';
+import PaymentFail from './components/PaymentFail.jsx';
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 if (!PUBLISHABLE_KEY) {
@@ -39,6 +42,9 @@ const router = createBrowserRouter([
       { path: "/course_desc", element: <Course_desc /> },
       { path: "/my_courses", element: <My_courses /> },
       { path: "/pay/:courseId", element: <Payment /> },
+      { path: "/payment-result", element: <PaymentResult />},
+      { path: "/payment-success", element: <PaymentSuccess />},
+      { path: "/payment-fail", element: <PaymentFail />},
       // add more routes here if needed
     ],
   },
