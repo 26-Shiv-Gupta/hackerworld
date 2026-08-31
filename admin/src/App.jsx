@@ -6,11 +6,20 @@ import Users from "./pages/Users";
 import Jobs from "./pages/Jobs";
 import Login from "./pages/Login";
 
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AdminLayout />}>
+        <Route
+          path="/"
+          element={
+            <AdminProtectedRoute>
+              <AdminLayout />
+            </AdminProtectedRoute>
+          }
+        >
           <Route index element={<Dashboard />} />
           <Route path="courses" element={<Courses />} />
           <Route path="users" element={<Users />} />
