@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/solid";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe } from "@stripe/stripe-js";
+import { useAuth, useClerk } from "@clerk/clerk-react";
 
 const stripePromise = loadStripe('pk_test_51RzK2SBgVAaIgF2Jj0WgX6G47LihWFMzzYsQxpoPmVEEE0Yuhbdu1rEqyakzKgnSgp6JmUoQ6nWBkGnQJyqyjMl500IiT4MbCS');
 
@@ -16,11 +17,21 @@ const Course_desc = () => {
     const location = useLocation();
     const course = location.state;
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
     const navigate = useNavigate();
+
+    const { isSignedIn } = useAuth();
+    const { openSignIn } = useClerk();
+
+    const handleEnroll = () => {
+        if(!isSignedIn) {
+            openSignIn();
+            return;
+        }
+
+        navigate(`/pay/${course._id}`);
+    };
+
+    
     return (
 
         <>
@@ -125,7 +136,7 @@ const Course_desc = () => {
                                     </li>
                                 ))}
                             </ul>
-                            <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-lg transition-colors shadow-lg shadow-red-700/20" onClick={() => navigate(`/pay/${course._id}`)}>
+                            <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-lg transition-colors shadow-lg shadow-red-700/20" onClick={handleEnroll}>
                                 Enroll Now
                             </button>
                         </div>
