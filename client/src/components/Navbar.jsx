@@ -96,15 +96,6 @@ const Navbar = () => {
               <SignedIn>
                 <UserButton />
               </SignedIn>
-
-              {isAdmin && (
-                <a
-                  href="https://hackerworld-admin.onrender.com"
-                  className="w-full bg-red-700 cursor-pointer hover:bg-red-800 text-white px-4 py-2 rounded-lg font-semibold"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Dashboard
-                </a>)}
             </div>
 
             {/* Mobile menu button */}
@@ -211,15 +202,6 @@ const Navbar = () => {
                 <SignedIn>
                   <UserButton />
                 </SignedIn>
-
-                {isAdmin && (
-                <a
-                  href="https://hackerworld-admin.onrender.com"
-                  className="block w-full mt-2 bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg font-semibold"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Dashboard
-                </a>)}
               </div>
             </div>
           )}
