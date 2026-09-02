@@ -1,7 +1,14 @@
 import React from "react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import { useClerk } from "@clerk/clerk-react";
 
 export default function Topbar({ setSidebarOpen }) {
+  const { signOut } = useClerk();
+
+  const handleLogout = async () => {
+    await signOut();
+  };
+
   return (
     <div className="bg-white shadow p-4 flex justify-between items-center z-10">
       {/* Left side: Mobile hamburger + Title */}
@@ -22,7 +29,10 @@ export default function Topbar({ setSidebarOpen }) {
       </div>
 
       {/* Right side: Logout button */}
-      <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+      <button
+        onClick={handleLogout}
+        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
+      >
         Logout
       </button>
     </div>
