@@ -1,5 +1,7 @@
 const { Webhook } = require("svix");
+const Stripe = require("stripe");
 const User = require("../models/userModel");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 /*
   Clerk teen tarah ke events bhej sakta hai:
@@ -125,7 +127,7 @@ const stripeWebhookHandler = async (req, res) => {
 
     if (!STRIPE_WEBHOOK_SECRET) {
       console.error(
-        "❌ STRIPE_WEBHOOK_SECRET .env me missing hai"
+        "❌ STRIPE_WEBHOOK_SECRET is missing"
       );
 
       return res.status(500).json({

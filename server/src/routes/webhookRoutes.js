@@ -1,7 +1,7 @@
 const express = require("express");
 const { 
   clerkWebhookHandler,
-  stripWebhookHandler
+  stripeWebhookHandler
  } = require("../controllers/webhookController");
 
 const router = express.Router();
