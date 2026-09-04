@@ -118,6 +118,115 @@ const clerkWebhookHandler = async (req, res) => {
   }
 };
 
+const stripeWebhookHandler = async (req, res) => {
+  try {
+    const STRIPE_WEBHOOK_SECRET =
+      process.env.STRIPE_WEBHOOK_SECRET;
+
+    if (!STRIPE_WEBHOOK_SECRET) {
+      console.error(
+        "❌ STRIPE_WEBHOOK_SECRET .env me missing hai"
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: "Server misconfigured",
+      });
+    }
+
+    const signature =
+      req.headers["stripe-signature"];
+
+    if (!signature) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing Stripe signature",
+      });
+    }
+
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        signature,
+        STRIPE_WEBHOOK_SECRET
+      );
+    } catch (err) {
+      console.error(
+        "❌ Stripe webhook signature verification failed:",
+        err.message
+      );
+
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Stripe signature",
+      });
+    }
+
+    console.log("Stripe event:", event.type);
+
+    switch (event.type) {
+
+      case "payment_intent.succeeded": {
+        const paymentIntent = event.data.object;
+
+        console.log(
+          "✅ Payment successful:",
+          paymentIntent.id
+        );
+
+        const userId =
+          paymentIntent.metadata.userId;
+
+        const courseId =
+          paymentIntent.metadata.courseId;
+
+        console.log("User:", userId);
+        console.log("Course:", courseId);
+
+        // Yahan enrollment create karoge
+
+        break;
+      }
+
+      case "payment_intent.payment_failed": {
+        const paymentIntent = event.data.object;
+
+        console.log(
+          "❌ Payment failed:",
+          paymentIntent.id
+        );
+
+        break;
+      }
+
+      default:
+        console.log(
+          "Unhandled Stripe event:",
+          event.type
+        );
+    }
+
+    return res.status(200).json({
+      success: true,
+    });
+
+  } catch (error) {
+    console.error(
+      "❌ Stripe webhook handler error:",
+      error.message
+    );
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+
 module.exports = {
   clerkWebhookHandler,
+  stripeWebhookHandler,
 };

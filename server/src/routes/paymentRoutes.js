@@ -1,6 +1,6 @@
 const express = require("express");
 const Stripe = require("stripe");
-const { requireAuth } = require("@clerk/express");
+const { requireAuth, auth } = require("@clerk/express");
 const Course = require("../models/course");
 
 const router = express.Router();
@@ -13,6 +13,7 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
     try {
         // Get courseId from frontend
         const { courseId } = req.body;
+        const { userId } = req.auth();
 
         // Validate courseId
         if (!courseId) {
@@ -53,6 +54,7 @@ router.post("/create-intent", requireAuth(), async (req, res) => {
 
             metadata: {
                 courseId: course._id.toString(),
+                userId
             },
         });
 

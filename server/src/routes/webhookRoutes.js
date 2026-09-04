@@ -1,5 +1,8 @@
 const express = require("express");
-const { clerkWebhookHandler } = require("../controllers/webhookController");
+const { 
+  clerkWebhookHandler,
+  stripWebhookHandler
+ } = require("../controllers/webhookController");
 
 const router = express.Router();
 
@@ -12,6 +15,12 @@ router.post(
   "/clerk",
   express.raw({ type: "application/json" }),
   clerkWebhookHandler
+);
+
+router.post(
+    "/stripe",
+    express.raw({ type: "application/json" }),
+    stripeWebhookHandler
 );
 
 module.exports = router;

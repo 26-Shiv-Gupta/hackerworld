@@ -5,7 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useAuth } from '@clerk/clerk-react';
 
-// set this in client/.env: VITE_STRIPE_PUBLIC_KEY=pk_test_...
+// In client/.env: VITE_STRIPE_PUBLIC_KEY=pk_test_...
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 function CheckoutForm({ clientSecret }) {
@@ -60,14 +60,17 @@ export default function PaymentPage() {
         const res = await fetch("https://hackerworld.onrender.com/api/payment/create-intent", {
           method: "POST",
           headers: {
-                "Content-Type": "application/json",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ courseId }),
         });
+
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
         const data = await res.json();
         setClientSecret(data.clientSecret);
+        
       } catch (err) {
         setError(err.message);
       }
