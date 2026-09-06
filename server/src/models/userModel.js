@@ -51,6 +51,12 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    enrolledCourses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
   },
   {
     timestamps: true, // createdAt, updatedAt automatically add ho jayenge

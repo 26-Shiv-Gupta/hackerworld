@@ -1,6 +1,7 @@
 const { Webhook } = require("svix");
 const Stripe = require("stripe");
 const User = require("../models/userModel");
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 /*
@@ -19,9 +20,13 @@ const clerkWebhookHandler = async (req, res) => {
 
     if (!WEBHOOK_SECRET) {
       console.error("❌ CLERK_WEBHOOK_SECRET .env me missing hai");
+
       return res
         .status(500)
-        .json({ success: false, message: "Server misconfigured" });
+        .json({
+          success: false,
+          message: "Server misconfigured",
+        });
     }
 
     // Svix headers jo Clerk request ke saath bhejta hai
@@ -32,24 +37,36 @@ const clerkWebhookHandler = async (req, res) => {
     if (!svix_id || !svix_timestamp || !svix_signature) {
       return res
         .status(400)
-        .json({ success: false, message: "Missing svix headers" });
+        .json({
+          success: false,
+          message: "Missing svix headers",
+        });
     }
 
     const wh = new Webhook(WEBHOOK_SECRET);
 
     let evt;
+
     try {
-      // req.body yahan raw Buffer hona chahiye (route me express.raw() use kiya hai)
+      // req.body yahan raw Buffer hona chahiye
+      // route me express.raw() use kiya hai
       evt = wh.verify(req.body, {
         "svix-id": svix_id,
         "svix-timestamp": svix_timestamp,
         "svix-signature": svix_signature,
       });
     } catch (err) {
-      console.error("❌ Webhook signature verify fail:", err.message);
+      console.error(
+        "❌ Webhook signature verify fail:",
+        err.message
+      );
+
       return res
         .status(400)
-        .json({ success: false, message: "Invalid signature" });
+        .json({
+          success: false,
+          message: "Invalid signature",
+        });
     }
 
     const { type, data } = evt;
@@ -60,23 +77,32 @@ const clerkWebhookHandler = async (req, res) => {
           clerkId: data.id,
           firstName: data.first_name || "",
           lastName: data.last_name || "",
-          email: data.email_addresses?.[0]?.email_address || "",
+          email:
+            data.email_addresses?.[0]?.email_address || "",
           profileImage: data.image_url || "",
         };
 
-        console.log("hello " + data.id);
-
-        // Agar pehle se hai (duplicate webhook retry case) to upsert kar do
+        // Agar pehle se hai (duplicate webhook retry case)
+        // to upsert kar do
         await User.findOneAndUpdate(
           { clerkId: newUser.clerkId },
-          newUser,
+          {
+            $set: newUser,
+            $setOnInsert: {
+              enrolledCourses: [],
+            },
+          },
           {
             upsert: true,
             new: true,
           }
         );
 
-        console.log("✅ User created in MongoDB:", newUser.email);
+        console.log(
+          "✅ User created in MongoDB:",
+          newUser.email
+        );
+
         break;
       }
 
@@ -84,7 +110,8 @@ const clerkWebhookHandler = async (req, res) => {
         const updatedUser = {
           firstName: data.first_name || "",
           lastName: data.last_name || "",
-          email: data.email_addresses?.[0]?.email_address || "",
+          email:
+            data.email_addresses?.[0]?.email_address || "",
           profileImage: data.image_url || "",
         };
 
@@ -93,25 +120,44 @@ const clerkWebhookHandler = async (req, res) => {
           updatedUser
         );
 
-        console.log("🔄 User updated in MongoDB:", data.id);
+        console.log(
+          "🔄 User updated in MongoDB:",
+          data.id
+        );
+
         break;
       }
 
       case "user.deleted": {
-        await User.findOneAndDelete({ clerkId: data.id });
+        await User.findOneAndDelete({
+          clerkId: data.id,
+        });
 
-        console.log("🗑️ User deleted from MongoDB:", data.id);
+        console.log(
+          "🗑️ User deleted from MongoDB:",
+          data.id
+        );
+
         break;
       }
 
       default:
-        console.log("ℹ️ Unhandled Clerk event type:", type);
+        console.log(
+          "ℹ️ Unhandled Clerk event type:",
+          type
+        );
     }
 
-    // Clerk ko 200 jaldi return karna zaroori hai, warna woh retry karega
-    return res.status(200).json({ success: true });
+    // Clerk ko 200 return karna zaroori hai,
+    // warna woh retry karega
+    return res.status(200).json({
+      success: true,
+    });
   } catch (error) {
-    console.error("❌ Webhook handler error:", error.message);
+    console.error(
+      "❌ Webhook handler error:",
+      error.message
+    );
 
     return res.status(500).json({
       success: false,
@@ -119,6 +165,26 @@ const clerkWebhookHandler = async (req, res) => {
     });
   }
 };
+
+
+/*
+===========================================
+STRIPE WEBHOOK HANDLER
+===========================================
+
+Stripe payment successful hone ke baad:
+
+Stripe
+  ↓
+payment_intent.succeeded
+  ↓
+userId + courseId metadata se nikalo
+  ↓
+User ko Clerk ID se find karo
+  ↓
+courseId ko enrolledCourses me add karo
+===========================================
+*/
 
 const stripeWebhookHandler = async (req, res) => {
   try {
@@ -149,6 +215,13 @@ const stripeWebhookHandler = async (req, res) => {
     let event;
 
     try {
+      /*
+        IMPORTANT:
+        req.body raw Buffer hona chahiye.
+        Isliye stripe webhook route me
+        express.raw() use karna zaroori hai.
+      */
+
       event = stripe.webhooks.constructEvent(
         req.body,
         signature,
@@ -166,9 +239,19 @@ const stripeWebhookHandler = async (req, res) => {
       });
     }
 
-    console.log("Stripe event:", event.type);
+    console.log(
+      "Stripe event:",
+      event.type
+    );
+
 
     switch (event.type) {
+
+      /*
+      =========================================
+      PAYMENT SUCCESS
+      =========================================
+      */
 
       case "payment_intent.succeeded": {
         const paymentIntent = event.data.object;
@@ -178,19 +261,126 @@ const stripeWebhookHandler = async (req, res) => {
           paymentIntent.id
         );
 
+        /*
+          PaymentIntent create karte waqt humne metadata me:
+
+          userId
+          courseId
+
+          save kiya tha.
+        */
+
         const userId =
           paymentIntent.metadata.userId;
 
         const courseId =
           paymentIntent.metadata.courseId;
 
-        console.log("User:", userId);
-        console.log("Course:", courseId);
 
-        // Yahan enrollment create karoge
+        // Metadata validation
+        if (!userId || !courseId) {
+          console.error(
+            "❌ userId or courseId missing from Stripe metadata"
+          );
+
+          break;
+        }
+
+        console.log(
+          "Clerk User ID:",
+          userId
+        );
+
+        console.log(
+          "Course ID:",
+          courseId
+        );
+
+
+        /*
+          IMPORTANT:
+
+          userId = Clerk ID
+
+          MongoDB _id = ObjectId
+
+          Isliye findById() use nahi karna.
+
+          clerkId ke through user find karna hai.
+        */
+
+        const user = await User.findOne({
+          clerkId: userId,
+        });
+
+
+        // User nahi mila
+        if (!user) {
+          console.error(
+            "❌ User not found in MongoDB:",
+            userId
+          );
+
+          break;
+        }
+
+
+        /*
+          Duplicate enrollment prevent karna.
+
+          Stripe webhook same event ko retry kar sakta hai.
+          Isliye course ko dobara push nahi karna.
+        */
+
+        const alreadyEnrolled =
+          user.enrolledCourses.some(
+            (enrolledCourse) =>
+              enrolledCourse.toString() === courseId
+          );
+
+
+        if (alreadyEnrolled) {
+          console.log(
+            "ℹ️ User already enrolled in this course:",
+            courseId
+          );
+
+          break;
+        }
+
+
+        /*
+          Course ko enrolledCourses me add karo
+        */
+
+        user.enrolledCourses.push(courseId);
+
+        await user.save();
+
+
+        console.log(
+          "🎓 Enrollment created successfully"
+        );
+
+        console.log(
+          "User:",
+          userId
+        );
+
+        console.log(
+          "Course:",
+          courseId
+        );
 
         break;
       }
+
+
+      /*
+      =========================================
+      PAYMENT FAILED
+      =========================================
+      */
 
       case "payment_intent.payment_failed": {
         const paymentIntent = event.data.object;
@@ -200,15 +390,48 @@ const stripeWebhookHandler = async (req, res) => {
           paymentIntent.id
         );
 
+        const userId =
+          paymentIntent.metadata.userId;
+
+        const courseId =
+          paymentIntent.metadata.courseId;
+
+        console.log(
+          "User:",
+          userId
+        );
+
+        console.log(
+          "Course:",
+          courseId
+        );
+
+        /*
+          Abhi failed payment ke liye
+          enrollment create nahi karna hai.
+        */
+
         break;
       }
 
+
+      /*
+      =========================================
+      OTHER EVENTS
+      =========================================
+      */
+
       default:
         console.log(
-          "Unhandled Stripe event:",
+          "ℹ️ Unhandled Stripe event:",
           event.type
         );
     }
+
+
+    /*
+      Stripe ko 200 response dena zaroori hai.
+    */
 
     return res.status(200).json({
       success: true,
