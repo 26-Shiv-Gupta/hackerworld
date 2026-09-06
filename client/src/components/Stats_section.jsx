@@ -1,26 +1,27 @@
 import React from 'react';
 
+const stats = [
+  { value: "50,000+", label: "Students Trained" },
+  { value: "95%", label: "Job Placement Rate" },
+  { value: "200+", label: "Expert Instructors" },
+  { value: "24/7", label: "Lab Access" },
+];
+
 const Stats_section = () => {
   return (
-    <section className="bg-red-700 py-10">
+    <section className="bg-bg-card border-y border-border-subtle py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="text-3xl font-bold text-red-600 mb-2">50,000+</div>
-            <div className="text-gray-300">Students Trained</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-red-600 mb-2">95%</div>
-            <div className="text-gray-300">Job Placement Rate</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-red-600 mb-2">200+</div>
-            <div className="text-gray-300">Expert Instructors</div>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-red-600 mb-2">24/7</div>
-            <div className="text-gray-300">Lab Access</div>
-          </div>
+          {stats.map((stat, i) => (
+            <div key={i}>
+              <div className="text-3xl md:text-4xl font-extrabold text-gradient-cyan mb-2">
+                {stat.value}
+              </div>
+              <div className="text-gray-400 text-sm font-mono-terminal uppercase tracking-wide">
+                {stat.label}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -37,12 +37,19 @@ function CheckoutForm({ clientSecret }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-8 bg-gray-900 rounded-lg shadow">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-8 bg-bg-card border border-border-subtle rounded-xl shadow-lg">
       <PaymentElement />
-      <button disabled={loading || !stripe} className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-semibold w-full mt-6">
+      <button
+        disabled={loading || !stripe}
+        className="bg-cyan-bright hover:bg-cyan-glow text-bg-primary px-6 py-3 rounded-lg text-sm font-bold uppercase tracking-wide w-full mt-6 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+      >
         {loading ? "Processing..." : "Pay"}
       </button>
-      {status && <div className="text-center text-red-300 mt-2">{status}</div>}
+      {status && (
+        <div className="text-center text-cyan-bright text-sm mt-3 font-mono-terminal">
+          {status}
+        </div>
+      )}
     </form>
   );
 }
@@ -70,7 +77,7 @@ export default function PaymentPage() {
 
         const data = await res.json();
         setClientSecret(data.clientSecret);
-        
+
       } catch (err) {
         setError(err.message);
       }
@@ -78,16 +85,47 @@ export default function PaymentPage() {
     createIntent();
   }, [courseId, getToken]);
 
-  if (error) return <div className="text-center text-red-500 mt-6">{error}</div>;
-  if (!clientSecret) return <div className="text-center text-white">Loading payment info...</div>;
+  if (error) {
+    return (
+      <main className="bg-bg-primary min-h-screen flex items-center justify-center px-4">
+        <div className="text-center text-red-400 bg-bg-card border border-red-500/20 rounded-xl p-6 max-w-md">
+          {error}
+        </div>
+      </main>
+    );
+  }
 
-  const appearance = { theme: 'stripe' };
+  if (!clientSecret) {
+    return (
+      <main className="bg-bg-primary min-h-screen flex items-center justify-center px-4">
+        <div className="text-center text-gray-400 font-mono-terminal">
+          <span className="text-terminal-green">[...]</span> Loading payment info...
+        </div>
+      </main>
+    );
+  }
+
+  const appearance = {
+    theme: 'night',
+    variables: {
+      colorPrimary: '#38bdf8',
+      colorBackground: '#0f1524',
+      colorText: '#ffffff',
+      colorDanger: '#f87171',
+      fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
+      borderRadius: '8px',
+    },
+  };
   const options = { clientSecret, appearance };
 
   return (
-    <Elements stripe={stripePromise} options={options}>
-      <h2 className="text-2xl font-bold text-white mb-4 text-center">Complete Your Payment</h2>
-      <CheckoutForm clientSecret={clientSecret} />
-    </Elements>
+    <main className="bg-bg-primary min-h-screen py-16 px-4">
+      <h2 className="text-2xl font-extrabold text-white mb-8 text-center">
+        Complete Your <span className="text-gradient-cyan">Payment</span>
+      </h2>
+      <Elements stripe={stripePromise} options={options}>
+        <CheckoutForm clientSecret={clientSecret} />
+      </Elements>
+    </main>
   );
 }

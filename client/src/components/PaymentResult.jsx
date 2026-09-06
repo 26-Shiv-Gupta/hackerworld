@@ -49,8 +49,8 @@ export default function PaymentResult() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        Checking payment status...
+      <div className="min-h-screen bg-bg-primary flex items-center justify-center text-gray-400 font-mono-terminal">
+        <span className="text-cyan-bright animate-pulse mr-2">[...]</span> Checking payment status...
       </div>
     );
   }
