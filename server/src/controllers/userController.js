@@ -1,50 +1,90 @@
-const User = require("../models/userModel");
+const User = require("../models/userModel.js");
 
-// GET /api/users -> sab users list
 const getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find().sort({ createdAt: -1 });
+    try {
+        const users = await User.find();
 
-    return res.status(200).json({
-      success: true,
-      count: users.length,
-      users,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
 
-// GET /api/users/:clerkId -> single user by clerkId
-const getUserByClerkId = async (req, res) => {
-  try {
-    const { clerkId } = req.params;
-
-    const user = await User.findOne({ clerkId });
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch users",
+        });
     }
-
-    return res.status(200).json({
-      success: true,
-      user,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
 };
+
+
+const getUserByClerkId = async (req, res) => {
+    try {
+        const { clerkId } = req.params;
+
+        const user = await User.findOne({ clerkId });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        res.status(200).json(user);
+
+    } catch (error) {
+        console.error("Error fetching user:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch user",
+        });
+    }
+};
+
+
+// Get logged-in user's enrolled courses
+const getMyCourses = async (req, res) => {
+    try {
+        // Clerk se logged-in user's ID
+        const { userId } = req.auth();
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
+            });
+        }
+
+        // Clerk ID ke through MongoDB user find karo
+        const user = await User.findOne({
+            clerkId: userId,
+        }).populate("enrolledCourses");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            courses: user.enrolledCourses,
+        });
+
+    } catch (error) {
+        console.error("Error fetching my courses:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to fetch enrolled courses",
+        });
+    }
+};
+
 
 module.exports = {
-  getAllUsers,
-  getUserByClerkId,
+    getAllUsers,
+    getUserByClerkId,
+    getMyCourses,
 };
