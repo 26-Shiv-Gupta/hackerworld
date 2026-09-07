@@ -20,7 +20,7 @@ export const AppContextProvider = ({ children }) => {
     const fetchCourses = async () => {
         try {
             const res = await fetch(
-                "http://localhost:5000/api/courses"
+                "https://hackerworld.onrender.com/api/courses"
             );
 
             const data = await res.json();
